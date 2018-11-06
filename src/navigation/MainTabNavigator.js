@@ -1,5 +1,4 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import Icon from '@expo/vector-icons/Entypo';
 import NewsFeedScreen from '../screens/NewsFeedScreen';

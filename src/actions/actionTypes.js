@@ -1,0 +1,1 @@
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS'; 
