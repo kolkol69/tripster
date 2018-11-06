@@ -71,7 +71,6 @@ class ProfileTab extends Component {
                     }}
                         source={{ uri: `${image}` }}>
                     </Image>
-
                 </View>
             )
         })
@@ -79,16 +78,13 @@ class ProfileTab extends Component {
     }
 
     renderSection() {
-
         if (this.state.activeIndex == 0) {
-
             return (
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
 
                     {this.renderSectionOne()}
                 </View>
             )
-
         }
         else if (this.state.activeIndex == 1) {
             return (

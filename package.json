@@ -1,5 +1,5 @@
 {
-  "name": "my-new-project",
+  "name": "tripster",
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
@@ -23,5 +23,24 @@
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
     "jest-expo": "^31.0.0"
-  }
+  },
+  "description": "socialnetwork for travelers",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolkol69/tripster.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "express",
+    "expo",
+    "react-redux"
+  ],
+  "author": "Maks Kolodiy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kolkol69/tripster/issues"
+  },
+  "homepage": "https://github.com/kolkol69/tripster#readme"
 }
