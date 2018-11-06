@@ -13,9 +13,9 @@ const instructions = Platform.select({
     android: 'Shake or press menu button for dev menu',
 });
 
-export default class CreateTripScreen extends Component {
+export default class MessagesScreen extends Component {
     static navigationOptions = {
-        title: 'Create',
+        title: 'Messages',
     };
 
     render() {
@@ -27,10 +27,10 @@ export default class CreateTripScreen extends Component {
                         backgroundColor="#4F6D7A"
                     />
                     <Text style={styles.welcome}>
-                        Create is commin
+                        Messages is commin
                     </Text>
                     <Text style={styles.instructions}>
-                        Create is commin
+                        Messages is commin
                     </Text>
                     <Text style={styles.instructions}>
                         {instructions}

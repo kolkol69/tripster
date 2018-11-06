@@ -1,60 +1,92 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import Icon from '@expo/vector-icons/Entypo';
+import NewsFeedScreen from '../screens/NewsFeedScreen';
+import ExploreScreen from '../screens/ExploreScreen';
+import CreateArticleScreen from '../screens/CreateArticleScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
-import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+const NewsFeedStack = createStackNavigator({
+  News: NewsFeedScreen,
 });
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+NewsFeedStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
+    <Icon
       focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+      name={'news'}
+      size={25}
     />
-  ),
+  ),tabBarOptions: {
+    showLabel: false,
+    activeTintColor: '#F8F8F8',
+    inactiveTintColor: '#586589',
+    tabStyle: {}
+} 
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const ExploreStack = createStackNavigator({
+  Explore: ExploreScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+ExploreStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
+    <Icon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={'magnifying-glass'}
+      size={25}
     />
-  ),
+  ),tabBarOptions: {
+    showLabel: false,
+    activeTintColor: '#F8F8F8',
+    inactiveTintColor: '#586589',
+    tabStyle: {}
+}
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const CreateArticleStack = createStackNavigator({
+  CreateArticle: CreateArticleScreen,
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+CreateArticleStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
+    <Icon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={'drink'}
+      size={25}
     />
   ),
+    tabBarOptions: {
+        showLabel: false,
+        activeTintColor: '#F8F8F8',
+        inactiveTintColor: '#586589',
+        tabStyle: {}
+    }
+};
+
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
+});
+
+ProfileStack.navigationOptions = {
+  tabBarIcon: ({ focused }) => (
+    <Icon
+      focused={focused}
+      name={'user'}
+      size={25}
+    />
+  ),tabBarOptions: {
+    showLabel: false,
+    activeTintColor: '#F8F8F8',
+    inactiveTintColor: '#586589',
+    tabStyle: {}
+}
 };
 
 export default createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
+  NewsFeedStack,
+  ExploreStack,
+  CreateArticleStack,
+  ProfileStack,
 });
