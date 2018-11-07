@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image, } from "react-native";
-import {  Icon, Button } from 'native-base';
+import { Button } from 'native-base';
+import Icon from '@expo/vector-icons/AntDesign';
 
 function ProfielHead(props) {
     return (
@@ -50,7 +51,7 @@ function ProfielHead(props) {
                                 marginRight: 10, marginLeft: 5,
                                 justifyContent: 'center'
                             }}>
-                                <Icon name="ios-settings" size={44} style={{ color: 'black' }}></Icon></Button>
+                                <Icon name="circledown" size={15} style={{ color: 'black' }}></Icon></Button>
                         </View>
                     </View>{/**End edit profile**/}
                 </View>
@@ -58,8 +59,7 @@ function ProfielHead(props) {
             <View style={{ paddingBottom: 10 }}>
                 <View style={{ paddingHorizontal: 10 }}>
                     <Text style={{ fontWeight: 'bold' }}>Maks Kolodiy</Text>
-                    <Text>Student | Dev | Jeez</Text>
-                    <Text>@kolkol69</Text>
+                    <Text>Student | Dev | Jeez | @kolkol69</Text>
                 </View>
             </View>
         </View>
