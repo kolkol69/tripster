@@ -54,8 +54,6 @@ class Body extends Component {
     }
 }
 
-
-
 const mapStateToProps = (state) => ({
 
 })
