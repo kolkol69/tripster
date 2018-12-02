@@ -2,7 +2,7 @@
   {
     "following": 17,
     "followers": 11,
-    "tours": [{
+    "tour": {
       "likes": [],
       "startDate": "2018-11-02T17:48:38.711Z",
       "endDate": "2019-03-20T22:29:16.601Z",
@@ -508,7 +508,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 0,
     "region": "Norway",
     "name": "Juan",
@@ -519,7 +519,7 @@
   {
     "following": 19,
     "followers": 17,
-    "tours": [{
+    "tour": {
       "likes": [
         0,
         1,
@@ -837,7 +837,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 1,
     "region": "Slovakia",
     "name": "Concepción",
@@ -854,7 +854,7 @@
   {
     "following": 15,
     "followers": 4,
-    "tours": [{
+    "tour": {
       "likes": [
         0,
         1,
@@ -1870,7 +1870,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 2,
     "region": "United States",
     "name": "Dorota",
@@ -1885,7 +1885,7 @@
   {
     "following": 14,
     "followers": 0,
-    "tours": [{
+    "tour": {
       "likes": [],
       "startDate": "2018-10-15T00:48:31.856Z",
       "endDate": "2019-02-18T15:28:01.026Z",
@@ -2137,7 +2137,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 3,
     "region": "Korea",
     "name": "Magdalena",
@@ -2155,7 +2155,7 @@
   {
     "following": 15,
     "followers": 6,
-    "tours": [{
+    "tour": {
       "likes": [
         0,
         1
@@ -2676,7 +2676,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 4,
     "region": "New Zealand",
     "name": "Mara",
@@ -2694,7 +2694,7 @@
   {
     "following": 17,
     "followers": 15,
-    "tours": [{
+    "tour": {
       "likes": [
         0,
         1,
@@ -3479,7 +3479,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 5,
     "region": "Mexico",
     "name": "Επωπέας",
@@ -3499,7 +3499,7 @@
   {
     "following": 16,
     "followers": 8,
-    "tours": [{
+    "tour": {
       "likes": [
         0,
         1
@@ -3949,7 +3949,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 6,
     "region": "Greece",
     "name": "Václav",
@@ -3964,7 +3964,7 @@
   {
     "following": 9,
     "followers": 4,
-    "tours":[{
+    "tour": {
       "likes": [
         0,
         1,
@@ -4245,7 +4245,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 7,
     "region": "Romania",
     "name": "Andrea",
@@ -4260,7 +4260,7 @@
   {
     "following": 5,
     "followers": 9,
-    "tours": [{
+    "tour": {
       "likes": [],
       "startDate": "2018-11-22T14:04:52.071Z",
       "endDate": "2019-03-03T13:07:39.378Z",
@@ -5001,7 +5001,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 8,
     "region": "China",
     "name": "Bucur",
@@ -5022,7 +5022,7 @@
   {
     "following": 18,
     "followers": 19,
-    "tours": [{
+    "tour": {
       "likes": [
         0,
         1,
@@ -5504,7 +5504,7 @@
           ]
         }
       ]
-    }],
+    },
     "id": 9,
     "region": "Kyrgyz Republic",
     "name": "Scheffer",
