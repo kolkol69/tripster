@@ -2,6 +2,7 @@ const express = require('express');
 // const path = require('path');
 // const open = require('open');
 const start_router = require('./routes/start');
+const fakeUsers = require('./routes/fakeUsers');
 
 const port = 8873;
 const app = express();
@@ -17,7 +18,7 @@ app.use((req, res, next) => {
   req.method === 'OPTIONS' ? res.sendStatus(204) : next();
 });
 app.use('/', start_router);
-app.use('/test', start_router);
+app.use('/generateFakeUsers', fakeUsers);
 
 app.listen(port, (err) => {
   if (err) {
