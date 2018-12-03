@@ -20,14 +20,18 @@
     "native-base": "^2.8.1",
     "open": "0.0.5",
     "path": "^0.12.7",
+    "pg": "^7.7.1",
+    "pg-hstore": "^2.3.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react-native-maps-directions": "^1.6.0",
     "react-navigation": "^2.18.2",
     "react-redux": "^5.1.0",
     "redux": "^4.0.1",
     "redux-axios-middleware": "^4.0.0",
     "redux-immutable-state-invariant": "^2.1.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "sequelize": "^4.41.2"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
