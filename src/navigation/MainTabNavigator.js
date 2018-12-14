@@ -3,7 +3,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import Icon from '@expo/vector-icons/Entypo';
 import NewsFeedScreen from '../screens/NewsFeedScreen';
 import ExploreScreen from '../screens/ExploreScreen';
-import CreateArticleScreen from '../screens/CreateArticleScreen';
+import CreateTourScreen from '../screens/CreateTourScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 const NewsFeedStack = createStackNavigator({
@@ -44,11 +44,11 @@ ExploreStack.navigationOptions = {
 }
 };
 
-const CreateArticleStack = createStackNavigator({
-  CreateArticle: CreateArticleScreen,
+const CreateTourStack = createStackNavigator({
+  CreateTour: CreateTourScreen,
 });
 
-CreateArticleStack.navigationOptions = {
+CreateTourStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <Icon
       focused={focused}
@@ -86,6 +86,6 @@ ProfileStack.navigationOptions = {
 export default createBottomTabNavigator({
   NewsFeedStack,
   ExploreStack,
-  CreateArticleStack,
+  CreateTourStack,
   ProfileStack,
 });

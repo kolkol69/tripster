@@ -3,6 +3,7 @@ const express = require('express');
 // const open = require('open');
 const start_router = require('./routes/start');
 const fakeUsers = require('./routes/fakeUsers');
+const getPlaces = require('./routes/getPlaces');
 
 const port = 8873;
 const app = express();
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 });
 app.use('/', start_router);
 app.use('/generateFakeUsers', fakeUsers);
+app.use('/getPlaces', getPlaces);
 
 app.listen(port, (err) => {
   if (err) {
