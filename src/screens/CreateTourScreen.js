@@ -1,9 +1,26 @@
 const users = require('../../api/users.json');
 const places = require('../../api/places.json')
-import React, { Component } from 'react';
-import { Container, Header, Content, Form, Item, Input } from 'native-base';
-import Dialog, { DialogButton, DialogTitle, SlideAnimation, DialogContent } from 'react-native-popup-dialog';
-import { MapView } from 'expo';
+import React, {Component} from 'react';
+import {
+    Container,
+    Header,
+    Content,
+    Form,
+    Item,
+    Input,
+    Card,
+    CardItem,
+    Icon,
+    Right,
+    Body,
+    List,
+    ListItem,
+    Left,
+    Thumbnail
+} from 'native-base';
+import Dialog, {DialogButton, DialogTitle, SlideAnimation, DialogContent} from 'react-native-popup-dialog';
+import {MapView} from 'expo';
+
 import {
     Button,
     Platform,
@@ -12,11 +29,16 @@ import {
     Text,
     View,
     StatusBar,
-    FlatList
+    FlatList,
+    Dimensions
 } from 'react-native';
 
 import MapViewDirections from 'react-native-maps-directions';
-const api = require('../../api_key.js');
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
+
+const api = 'AIzaSyCgfuWPC6I1I6HTD2L9c7OHIk43w82uNIE';
 const instructions = Platform.select({
     ios: 'shake for dev menu',
     android: 'Shake or press menu button for dev menu',
@@ -24,7 +46,7 @@ const instructions = Platform.select({
 
 export default class CreateArticleScreen extends Component {
     static navigationOptions = {
-        title: 'Create',
+        title: 'Create Tour',
     };
 
     state = {
@@ -51,16 +73,26 @@ export default class CreateArticleScreen extends Component {
                     latitude: currentLocation.coords.latitude,
                 }
             })
-        }, (err) => { console.log('err', err) });
+        }, (err) => {
+            console.log('err', err)
+        });
         /**
          * start tracking
          */
     }
     showStartButton = () => {
         return (
-            <View>
+            <View style={{
+                width: width,
+                position: 'absolute',
+                bottom: 16,
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+                alignContent: 'center',
+            }}>
                 <Button
-                    style={{ width: 50, height: 30 }}
+                    style={{width: 50, height: 30}}
                     onPress={this.onPressStart}
                     title="Start"
                     color="#841584"
@@ -70,15 +102,24 @@ export default class CreateArticleScreen extends Component {
     }
     showButtons = () => {
         return (
-            <View>
+            <View style={{
+                zIndex: 1,
+                width: width,
+                position: 'absolute',
+                bottom: 16,
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+                alignContent: 'center',
+            }}>
                 <Button
-                    style={{ backgroundColor: 'black', width: 50, height: 30 }}
-                    onPress={this.onPressAddPOI}
+                    style={{width: 80, height: 30}}
+                    onPress={() => this.setState({start: false})}
                     title="Stop"
                     color="#841584"
                 />
                 <Button
-                    style={{ width: 50, height: 30 }}
+                    style={{width: 80, height: 30}}
                     onPress={this.onPressAddPOI}
                     title="Add POI"
                     color="#841584"
@@ -86,23 +127,54 @@ export default class CreateArticleScreen extends Component {
             </View>
         );
     }
+
     onPressAddPOI = () => {
-        this.setState({ POIList: places.results, showPOIList: true });
-    }
+        fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.state.userLocation.latitude},${this.state.userLocation.longitude}&radius=2137&key=${api}`)
+            .then(resp => resp.json())
+            .then(respJson => this.setState({POIList: respJson.results, showPOIList: true}));
+    };
 
     displayPOIList = () => {
-        if (Object.keys(this.state.POIList) !== 0) {
-            return (
-                <FlatList
-                    data={this.state.POIList}
-                    renderItem={({ item }) => <Button onPress={() => this.setState({ showPOIForm: true })} title={item.name} />}
-                />
-            );
-        } else {
-            return (
-                <Text>kocham cie zachara</Text>
-            );
-        }
+        return (
+            <View style={{
+                zIndex: 2,
+                width: width,
+                position: 'absolute',
+            }}>
+                <Container>
+                    <Content>
+                        <List>
+                            <FlatList
+                                style={{flex: 2}}
+                                data={this.state.POIList}
+                                renderItem={({item}) =>
+                                    <ListItem thumbnail>
+                                        <Left>
+                                            {item.photos[0] ?
+                                                <Thumbnail square
+                                                           source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${item.photos[0].photo_reference}&key=${api}`}}/>
+                                                : <Thumbnail square source={{uri: item.icon}}/>
+                                            }
+                                        </Left>
+                                        <Body>
+                                        <Text>{item.name}</Text>
+                                        <Text>{item.id}</Text>
+                                        </Body>
+                                        <Right>
+                                            <Button transparent title={'Add'} onPress={this.displayPOIForm}>
+                                            </Button>
+                                        </Right>
+                                    </ListItem>}
+                            />
+                        </List>
+                            <Button
+                                title={'Close'}
+                                onPress={() => this.setState({showPOIList: false})}>
+                            </Button>
+                    </Content>
+                </Container>
+            </View>
+        );
     }
 
     displayPOIForm = () => {
@@ -113,7 +185,7 @@ export default class CreateArticleScreen extends Component {
                     <Text>FUCK</Text>
                     <Button
                         title={'press me plz ;____;'}
-                        onPress={()=>this.setState({ showPOIForm: false })}
+                        onPress={() => this.setState({showPOIForm: false})}
                     />
                 </View>
             );
@@ -125,8 +197,11 @@ export default class CreateArticleScreen extends Component {
     getCurrPosition = () => {
         navigator.geolocation.getCurrentPosition((location) => {
             // console.log('location', location);
-            this.setState({ location, userLocation: { latitude: location.coords.latitude, longitude: location.coords.longitude } });
-        });
+            this.setState({
+                location,
+                userLocation: {latitude: location.coords.latitude, longitude: location.coords.longitude}
+            });
+        }, err => console.log('Could not access location', err));
     }
 
     render() {
@@ -136,54 +211,44 @@ export default class CreateArticleScreen extends Component {
                 <View>
                     <Text>
                         Loading..
-                </Text>
+                    </Text>
                 </View>
             );
         } else {
-
             return (
-                <MapView
-                    style={{ flex: 1 }}
-                    initialRegion={{
-                        latitude: this.state.location.coords.latitude,
-                        longitude: this.state.location.coords.longitude,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}
-                >
-                    {users[0].tour.places.map((place, i) => {
-                        return (
-                            <MapView.Marker
-                                key={i}
-                                coordinate={{ latitude: place.location.lat, longitude: place.location.lng, }}
-                                title={place.name}
-                                description={place.description}
-                            />
-                        )
-                    })}
-                    <MapView.Marker
-                        coordinate={typeof this.state.userLocation.latitude == 'undefined' ? {} : { latitude: this.state.userLocation.latitude, longitude: this.state.userLocation.longitude }}
-                        title={'USER'}
-                        description={'DESCR'}
-                    />
-
-                    <MapViewDirections
-                        origin={{ latitude: users[0].tour.places[0].location.lat, longitude: users[0].tour.places[0].location.lng }}
-                        // waypoints={users[0].tour.places.slice(1,-1).map(el => {return {latitude: el.location.lat, longitude: el.location.lng}})}
-                        destination={{ latitude: users[0].tour.places[6].location.lat, longitude: users[0].tour.places[6].location.lng }}
-                        apikey={api.default.key}
-
-                    />
-
-                    <View
-                        style={{ bottom: 0 }}
+                <View style={{flex: 1}}>
+                    <MapView
+                        style={{flex: 1}}
+                        initialRegion={{
+                            latitude: this.state.location.coords.latitude,
+                            longitude: this.state.location.coords.longitude,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        }}
                     >
+                        {users[0].tour.places.map((place, i) => {
+                            return (
+                                <MapView.Marker
+                                    key={i}
+                                    coordinate={{latitude: place.location.lat, longitude: place.location.lng,}}
+                                    title={place.name}
+                                    description={place.description}
+                                />
+                            )
+                        })}
+                        <MapView.Marker
+                            coordinate={typeof this.state.userLocation.latitude === 'undefined' ? {} : {
+                                latitude: this.state.userLocation.latitude,
+                                longitude: this.state.userLocation.longitude
+                            }}
+                            title={'USER'}
+                            description={'DESCR'}
+                        />
+                    </MapView>
 
-                        {this.state.start ? this.showButtons() : this.showStartButton()}
-                        {this.state.showPOIList && !this.state.showPOIForm ? this.displayPOIList() : <Text>Loading...</Text>}
-                        {this.displayPOIForm()}
-                    </View>
-                </MapView>
+                    {this.state.start ? this.showButtons() : this.showStartButton()}
+                    {this.state.showPOIList ? this.displayPOIList() : null}
+                </View>
             );
         }
 
