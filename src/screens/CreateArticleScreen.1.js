@@ -105,6 +105,9 @@ export default class CreateArticleScreen extends Component {
                         <View
                             style={{ bottom: 0 }}
                         >
+                            {this.state.start ? this.showButtons() : this.showStartButton()}
+                            {this.state.showPOIList && !this.state.showPOIForm ? this.displayPOIList() : <Text>Loading...</Text>}
+                            {this.displayPOIForm()}
                         </View>
                     </MapView>
                     <Button
