@@ -1,6 +1,7 @@
 
 const users = require('../../api/users.json');
 const places = require('../../api/places.json')
+const localhost = '10.132.7.36'; //adres ip komputera na ktorym postawiony jest lokalny serwer, potrzebne zeby robic zapytania (telefon i komputer musza byc w tej samej sieci)
 import React, {Component} from 'react';
 import axios from 'axios';
 import {
@@ -87,7 +88,7 @@ export default class CreateArticleScreen extends Component {
         }, (err) => {
             console.log('err', err)
         });
-        fetch('http://localhost:8873/startTour', {
+        fetch(`http://${localhost}:8873/startTour`, {
             method: 'POST',
             body: JSON.stringify({userID: this.state.userID}),
         }).then(res => res.json())
@@ -305,7 +306,7 @@ export default class CreateArticleScreen extends Component {
     };
 
     addPOI = () => {
-        fetch('http://localhost:8873/addPOI', {
+        fetch(`${localhost}:8873/addPOI`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -328,7 +329,6 @@ export default class CreateArticleScreen extends Component {
 
     getCurrPosition = () => {
         navigator.geolocation.getCurrentPosition((location) => {
-            // console.log('location', location);
             this.setState({
                 location,
                 userLocation: {latitude: location.coords.latitude, longitude: location.coords.longitude}
