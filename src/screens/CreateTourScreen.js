@@ -1,6 +1,8 @@
+
 const users = require('../../api/users.json');
 const places = require('../../api/places.json')
 import React, {Component} from 'react';
+import axios from 'axios';
 import {
     Container,
     Header,
@@ -16,7 +18,8 @@ import {
     List,
     ListItem,
     Left,
-    Thumbnail
+    Thumbnail,
+    Label
 } from 'native-base';
 import Dialog, {DialogButton, DialogTitle, SlideAnimation, DialogContent} from 'react-native-popup-dialog';
 import {MapView} from 'expo';
@@ -30,7 +33,9 @@ import {
     View,
     StatusBar,
     FlatList,
-    Dimensions
+    Dimensions,
+    TextInput,
+    Picker
 } from 'react-native';
 
 import MapViewDirections from 'react-native-maps-directions';
@@ -46,16 +51,22 @@ const instructions = Platform.select({
 
 export default class CreateArticleScreen extends Component {
     static navigationOptions = {
-        title: 'Create Tour',
+        title: 'Create tour'
     };
 
     state = {
         location: {},
         userLocation: {},
         start: false,
-        showPOIList: false,
-        POIList: [],
+        showNearbyPOIList: false,
+        nearbyPOIList: [],
         showPOIForm: false,
+        userID: 0, //takie rzeczy powinny byc gdzie w global storze ale narazie niech siedzi tutaj
+        currentTourID: 0,
+        POIToAddName: '',
+        POIToAddDescription: '',
+        POIToAddRating: '',
+        POIToAddImages: [],
     }
 
     componentDidMount() {
@@ -76,9 +87,15 @@ export default class CreateArticleScreen extends Component {
         }, (err) => {
             console.log('err', err)
         });
-        /**
-         * start tracking
-         */
+        fetch('http://localhost:8873/startTour', {
+            method: 'POST',
+            body: JSON.stringify({userID: this.state.userID}),
+        }).then(res => res.json())
+            .then(resJson => {
+                console.log('tour started, id: ', resJson);
+                this.setState({currentTourID: resJson.tourID})
+            }).catch(err => console.log(err));
+
     }
     showStartButton = () => {
         return (
@@ -131,10 +148,10 @@ export default class CreateArticleScreen extends Component {
     onPressAddPOI = () => {
         fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.state.userLocation.latitude},${this.state.userLocation.longitude}&radius=2137&key=${api}`)
             .then(resp => resp.json())
-            .then(respJson => this.setState({POIList: respJson.results, showPOIList: true}));
+            .then(respJson => this.setState({nearbyPOIList: respJson.results, showNearbyPOIList: true}));
     };
 
-    displayPOIList = () => {
+    displaynearbyPOIList = () => {
         return (
             <View style={{
                 zIndex: 2,
@@ -143,14 +160,30 @@ export default class CreateArticleScreen extends Component {
             }}>
                 <Container>
                     <Content>
+                        <View style={{margin: 32}}>
+                            <Button
+                                title={'Close'}
+                                color={'grey'}
+                                onPress={() => this.setState({showNearbyPOIList: false})}>
+                            </Button>
+                        </View>
+                        <View style={{margin: 32}}>
+                            <Button
+                                title={'Add custom poi'}
+                                onPress={() => {
+                                    this.displayPOIForm('custom', null);
+                                    this.setState({showNearbyPOIList: false, showPOIForm: true});
+                                }}>
+                            </Button>
+                        </View>
                         <List>
                             <FlatList
-                                style={{flex: 2}}
-                                data={this.state.POIList}
+                                data={this.state.nearbyPOIList}
+                                keyExtractor={(item, index) => index.toString()}
                                 renderItem={({item}) =>
                                     <ListItem thumbnail>
                                         <Left>
-                                            {item.photos[0] ?
+                                            {item.photos ?
                                                 <Thumbnail square
                                                            source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${item.photos[0].photo_reference}&key=${api}`}}/>
                                                 : <Thumbnail square source={{uri: item.icon}}/>
@@ -158,40 +191,139 @@ export default class CreateArticleScreen extends Component {
                                         </Left>
                                         <Body>
                                         <Text>{item.name}</Text>
-                                        <Text>{item.id}</Text>
                                         </Body>
                                         <Right>
-                                            <Button transparent title={'Add'} onPress={this.displayPOIForm}>
+                                            <Button title={'Add'} onPress={() => {
+                                                this.displayPOIForm('selected', item.id);
+                                                this.setState({showNearbyPOIList: false, showPOIForm: true});
+                                            }}>
                                             </Button>
                                         </Right>
                                     </ListItem>}
                             />
                         </List>
-                            <Button
-                                title={'Close'}
-                                onPress={() => this.setState({showPOIList: false})}>
-                            </Button>
                     </Content>
                 </Container>
             </View>
         );
     }
 
-    displayPOIForm = () => {
-        // this.setState({ showPOIList: false });
-        if (this.state.showPOIForm) {
+    displayPOIForm = (type, placeID) => {
+        if (type === 'custom') {
             return (
-                <View>
-                    <Text>FUCK</Text>
-                    <Button
-                        title={'press me plz ;____;'}
-                        onPress={() => this.setState({showPOIForm: false})}
-                    />
+                <View style={{
+                    zIndex: 2,
+                    width: width,
+                    position: 'absolute',
+                }}>
+                    <Container>
+                        <Content>
+                            <View style={{margin: 32}}>
+                                <Button
+                                    title={'Close'}
+                                    color={'grey'}
+                                    onPress={() => this.setState({showPOIForm: false})}>
+                                </Button>
+                            </View>
+                            <Form>
+                                <Item stackedLabel>
+                                    <Label>Place name</Label>
+                                    <Input onChangeText={(val) => this.setState({POIToAddName: val})}/>
+                                </Item>
+                                <Item stackedLabel>
+                                    <Label>Description</Label>
+                                    <Input onChangeText={(val) => this.setState({POIToAddDescription: val})}/>
+                                </Item>
+                                <Picker
+                                    selectedValue={'0'}
+                                    onValueChange={(val) => this.setState({POIToAddRating: val})}>
+                                    <Picker.Item label="1" value="1" />
+                                    <Picker.Item label="2" value="2" />
+                                    <Picker.Item label="3" value="3" />
+                                    <Picker.Item label="4" value="4" />
+                                    <Picker.Item label="5" value="5" />
+                                    <Picker.Item label="6" value="6" />
+                                </Picker>
+                            </Form>
+                            <View style={{margin: 32}}>
+                                <Button
+                                    title={'Save'}
+                                    onPress={this.addPOI}>
+                                </Button>
+                            </View>
+                        </Content>
+                    </Container>
                 </View>
             );
         } else {
-            <Text>KOKOKO</Text>
+            return (
+                <View style={{
+                    zIndex: 2,
+                    width: width,
+                    position: 'absolute',
+                }}>
+                    <Container>
+                        <Content>
+                            <View style={{margin: 32}}>
+                                <Button
+                                    title={'Close'}
+                                    color={'grey'}
+                                    onPress={() => this.setState({showPOIForm: false})}>
+                                </Button>
+                            </View>
+                            <Form>
+                                <Item stackedLabel>
+                                    <Label>Place name</Label>
+                                    <Input onChangeText={(val) => this.setState({POIToAddName: val})}/>
+                                </Item>
+                                <Item stackedLabel>
+                                    <Label>Description</Label>
+                                    <Input onChangeText={(val) => this.setState({POIToAddDescription: val})}/>
+                                </Item>
+                                <Picker
+                                    selectedValue={'0'}
+                                    onValueChange={(val) => this.setState({POIToAddRating: val})}>
+                                    <Picker.Item label="1" value="1" />
+                                    <Picker.Item label="2" value="2" />
+                                    <Picker.Item label="3" value="3" />
+                                    <Picker.Item label="4" value="4" />
+                                    <Picker.Item label="5" value="5" />
+                                    <Picker.Item label="6" value="6" />
+                                </Picker>
+                            </Form>
+                            <View style={{margin: 32}}>
+                                <Button
+                                    title={'Save'}
+                                    onPress={this.addPOI}>
+                                </Button>
+                            </View>
+                        </Content>
+                    </Container>
+                </View>
+            );
         }
+    };
+
+    addPOI = () => {
+        fetch('http://localhost:8873/addPOI', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                tourID: this.state.currentTourID,
+                POIToAddName: this.state.POIToAddName,
+                POIToAddDescription: this.state.POIToAddDescription,
+                POIToAddRating: this.state.POIToAddRating,
+                POIToAddImages: this.state.POIToAddImages,
+            }),
+        }).then(res => res.json())
+            .then(resJson => {
+                //trzeba dodac poi na mapie i narysowac trase - do zrobienia
+                console.log(resJson)
+            })
+            .catch(err => console.log(err));
     }
 
     getCurrPosition = () => {
@@ -247,7 +379,8 @@ export default class CreateArticleScreen extends Component {
                     </MapView>
 
                     {this.state.start ? this.showButtons() : this.showStartButton()}
-                    {this.state.showPOIList ? this.displayPOIList() : null}
+                    {this.state.showNearbyPOIList ? this.displaynearbyPOIList() : null}
+                    {this.state.showPOIForm ? this.displayPOIForm() : null}
                 </View>
             );
         }

@@ -4,6 +4,8 @@ const express = require('express');
 const start_router = require('./routes/start');
 const fakeUsers = require('./routes/fakeUsers');
 const getPlaces = require('./routes/getPlaces');
+const startTour = require('./routes/startTour');
+const addPOI = require('./routes/addPOI');
 
 const port = 8873;
 const app = express();
@@ -21,6 +23,9 @@ app.use((req, res, next) => {
 app.use('/', start_router);
 app.use('/generateFakeUsers', fakeUsers);
 app.use('/getPlaces', getPlaces);
+app.use('/startTour', startTour);
+app.use('/addPOI/', addPOI);
+
 
 app.listen(port, (err) => {
   if (err) {
