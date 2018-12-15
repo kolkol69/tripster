@@ -1,8 +1,6 @@
 const users = require('../../api/users.json');
 const places = require('../../api/places.json')
-const localhost = '10.132.7.36'; //adres ip komputera na ktorym postawiony jest lokalny serwer, potrzebne zeby robic zapytania (telefon i komputer musza byc w tej samej sieci)
 import React, {Component} from 'react';
-import axios from 'axios';
 import {
     Container,
     Header,
@@ -21,7 +19,6 @@ import {
     Thumbnail,
     Label
 } from 'native-base';
-import Dialog, {DialogButton, DialogTitle, SlideAnimation, DialogContent} from 'react-native-popup-dialog';
 import {MapView} from 'expo';
 import ImagePicker from 'react-native-image-picker';
 
@@ -39,7 +36,6 @@ import {
     Picker
 } from 'react-native';
 
-import MapViewDirections from 'react-native-maps-directions';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -62,7 +58,7 @@ export default class CreateArticleScreen extends Component {
         showNearbyPOIList: false,
         nearbyPOIList: [],
         showPOIForm: false,
-        userID: 0, //takie rzeczy powinny byc gdzie w global storze ale narazie niech siedzi tutaj
+        userID: 0, //takie rzeczy powinny byc gdzies w global storze ale narazie niech siedzi tutaj
         currentTourID: 0,
         POIToAddName: '',
         POIToAddDescription: '',
@@ -88,7 +84,7 @@ export default class CreateArticleScreen extends Component {
         }, (err) => {
             console.log('err', err)
         });
-        fetch(`http://${localhost}:8873/startTour`, {
+        fetch('http://localhost:8873/startTour', {
             method: 'POST',
             body: JSON.stringify({userID: this.state.userID}),
         }).then(res => res.json())
@@ -97,7 +93,7 @@ export default class CreateArticleScreen extends Component {
                 this.setState({currentTourID: resJson.tourID})
             }).catch(err => console.log(err));
 
-    }
+    };
     showStartButton = () => {
         return (
             <View style={{
@@ -115,7 +111,7 @@ export default class CreateArticleScreen extends Component {
                 />
             </View>
         )
-    }
+    };
     showButtons = () => {
         return (
             <View style={{
@@ -138,7 +134,7 @@ export default class CreateArticleScreen extends Component {
                 />
             </View>
         );
-    }
+    };
 
     onPressAddPOI = () => {
         fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.state.userLocation.latitude},${this.state.userLocation.longitude}&radius=2137&key=${api}`)
@@ -154,7 +150,7 @@ export default class CreateArticleScreen extends Component {
             }).catch(err => console.log(err));
     };
 
-    displaynearbyPOIList = () => {
+    displayNearbyPOIList = () => {
         return (
             <View style={{
                 zIndex: 2,
@@ -361,7 +357,7 @@ export default class CreateArticleScreen extends Component {
 
         console.log(data);
 
-        fetch(`${localhost}:8873/addPOI`, {
+        fetch('http://localhost:8873/addPOI', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -428,7 +424,7 @@ export default class CreateArticleScreen extends Component {
                     </MapView>
 
                     {this.state.start ? this.showButtons() : this.showStartButton()}
-                    {this.state.showNearbyPOIList ? this.displaynearbyPOIList() : null}
+                    {this.state.showNearbyPOIList ? this.displayNearbyPOIList() : null}
                     {this.state.showPOIForm ? this.displayPOIForm() : null}
                 </View>
             );
