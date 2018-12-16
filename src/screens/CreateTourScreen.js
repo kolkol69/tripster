@@ -1,6 +1,20 @@
 const users = require('../../api/users.json');
 const places = require('../../api/places.json')
 import React, {Component} from 'react';
+
+import * as firebase from 'firebase';
+
+// Initialize Firebase
+var firebaseConfig = {
+    apiKey: "AIzaSyDJ7VPaMgmjFU0bPDnnDW97lvGSwBGPwYI",
+    authDomain: "tripster-5fc5d.firebaseapp.com",
+    databaseURL: "https://tripster-5fc5d.firebaseio.com",
+    projectId: "tripster-5fc5d",
+    storageBucket: "tripster-5fc5d.appspot.com",
+    messagingSenderId: "798900647773"
+};
+
+
 import {
     Container,
     Header,
@@ -57,17 +71,27 @@ export default class CreateArticleScreen extends Component {
         start: false,
         showNearbyPOIList: false,
         nearbyPOIList: [],
-        showPOIForm: false,
+        showCustomPOIForm: false,
+        showSelectedPOIForm: false,
         userID: 0, //takie rzeczy powinny byc gdzies w global storze ale narazie niech siedzi tutaj
         currentTourID: 0,
+        selectedPOI: {},
         POIToAddName: '',
         POIToAddDescription: '',
         POIToAddRating: '',
         POIToAddImages: [],
+        POIToAddLocation: {},
+        currentUser: {}
     }
 
     componentDidMount() {
         this.getCurrPosition();
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+            firebase.database().ref('/users/users/' + this.state.userID).once('value')
+                .then(resp => {this.setState({currentUser: resp.val()})});
+        }
     }
 
     onPressStart = () => {
@@ -84,15 +108,27 @@ export default class CreateArticleScreen extends Component {
         }, (err) => {
             console.log('err', err)
         });
-        fetch('http://localhost:8873/startTour', {
-            method: 'POST',
-            body: JSON.stringify({userID: this.state.userID}),
-        }).then(res => res.json())
-            .then(resJson => {
-                console.log('tour started, id: ', resJson);
-                this.setState({currentTourID: resJson.tourID})
-            }).catch(err => console.log(err));
 
+        firebase.database().ref('users/users/' + this.state.userID + '/tours').once('value')
+            .then(resp => {
+                let tours = resp.val();
+                let id = Math.floor(Math.random() * 10000000);
+                this.setState({currentTourID: id});
+
+                tours.push({
+                    likes: [],
+                    startDate: new Date(),
+                    endDate: '',
+                    id: id,
+                    places: []
+                });
+
+                firebase.database().ref('users/users/'+ this.state.userID)
+                    .update({ tours: tours})
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
     };
     showStartButton = () => {
         return (
@@ -141,7 +177,7 @@ export default class CreateArticleScreen extends Component {
             .then(resp => resp.json())
             .then(respJson => {
                 this.setState({showNearbyPOIList: true});
-                respJson.results.slice(0,10).forEach(place => {
+                respJson.results.slice(0, 10).forEach(place => {
                     fetch(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${place.place_id}&key=${api}`)
                         .then(placeDetails => placeDetails.json())
                         .then(placeDetailsJson => this.setState({nearbyPOIList: this.state.nearbyPOIList.concat([placeDetailsJson])}))
@@ -169,10 +205,7 @@ export default class CreateArticleScreen extends Component {
                         <View style={{margin: 32}}>
                             <Button
                                 title={'Add custom poi'}
-                                onPress={() => {
-                                    this.displayPOIForm('custom', null);
-                                    this.setState({showNearbyPOIList: false, showPOIForm: true});
-                                }}>
+                                onPress={() => {this.setState({showNearbyPOIList: false, showCustomPOIForm: true});}}>
                             </Button>
                         </View>
                         <List>
@@ -193,10 +226,14 @@ export default class CreateArticleScreen extends Component {
                                         <Text>{item.result.formatted_address}</Text>
                                         </Body>
                                         <Right>
-                                            <Button title={'Add'} onPress={() => {
-                                                this.displayPOIForm('selected', item.result.id);
-                                                this.setState({showNearbyPOIList: false, showPOIForm: true});
-                                            }}>
+                                            <Button title={'Add'}
+                                                    onPress={() => {
+                                                        this.setState({
+                                                            showNearbyPOIList: false,
+                                                            showSelectedPOIForm: true,
+                                                            selectedPOI: item.result,
+                                                            POIToAddLocation: item.result.geometry.location});
+                                                    }}>
                                             </Button>
                                         </Right>
                                     </ListItem>}
@@ -206,10 +243,70 @@ export default class CreateArticleScreen extends Component {
                 </Container>
             </View>
         );
-    }
+    };
 
-    displayPOIForm = (type, placeName) => {
-        if (type === 'custom') {
+    displaySelectedPOIForm = () => {
+        return (
+            <View style={{
+                zIndex: 2,
+                width: width,
+                position: 'absolute',
+            }}>
+                <Container>
+                    <Content>
+                        <Form>
+                            <Item stackedLabel>
+                                <Label>Place name</Label>
+                                <Input value={this.state.selectedPOI.name}
+                                       onChangeText={(val) => this.setState({POIToAddName: val})}/>
+                            </Item>
+                            <Item stackedLabel>
+                                <Label>Description</Label>
+                                <Input onChangeText={(val) => this.setState({POIToAddDescription: val})}/>
+                            </Item>
+                            <View style={{margin: 16}}>
+                                <Text>Rating</Text>
+                                <Picker
+                                    style={{width: 128}}
+                                    onValueChange={(val) => this.setState({POIToAddRating: val})}>
+                                    <Picker.Item label="1" value="1"/>
+                                    <Picker.Item label="2" value="2"/>
+                                    <Picker.Item label="3" value="3"/>
+                                    <Picker.Item label="4" value="4"/>
+                                    <Picker.Item label="5" value="5"/>
+                                    <Picker.Item label="6" value="6"/>
+                                </Picker>
+                            </View>
+                            <View style={{margin: 16}}>
+                                <Button
+                                    title={'Chose photo'}
+                                    onPress={this.showImagePicker}/>
+                            </View>
+                        </Form>
+                        <View style={{
+                            margin: 32,
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            alignItems: 'center',
+                            alignContent: 'center',
+                        }}>
+                            <Button
+                                title={'Close'}
+                                color={'grey'}
+                                onPress={() => this.setState({showCustomPOIForm: false, showSelectedPOIForm: false})}>
+                            </Button>
+                            <Button
+                                title={'Save'}
+                                onPress={this.addPOI}>
+                            </Button>
+                        </View>
+                    </Content>
+                </Container>
+            </View>
+        );
+    };
+
+    displayCustomPOIForm = () => {
             return (
                 <View style={{
                     zIndex: 2,
@@ -255,7 +352,7 @@ export default class CreateArticleScreen extends Component {
                                     <Button
                                         title={'Close'}
                                         color={'grey'}
-                                        onPress={() => this.setState({showPOIForm: false})}>
+                                        onPress={() => this.setState({showCustomPOIForm: false, showSelectedPOIForm: false})}>
                                     </Button>
                                     <Button
                                         title={'Save'}
@@ -267,110 +364,54 @@ export default class CreateArticleScreen extends Component {
                     </Container>
                 </View>
             );
-        } else {
-            return (
-                <View style={{
-                    zIndex: 2,
-                    width: width,
-                    position: 'absolute',
-                }}>
-                    <Container>
-                        <Content>
-                            <Form>
-                                <Item stackedLabel>
-                                    <Label>Place name</Label>
-                                    <Input value={placeName}
-                                           onChangeText={(val) => this.setState({POIToAddName: val})}/>
-                                </Item>
-                                <Item stackedLabel>
-                                    <Label>Description</Label>
-                                    <Input onChangeText={(val) => this.setState({POIToAddDescription: val})}/>
-                                </Item>
-                                <View style={{margin: 16}}>
-                                    <Text>Rating</Text>
-                                    <Picker
-                                        style={{width: 128}}
-                                        onValueChange={(val) => this.setState({POIToAddRating: val})}>
-                                        <Picker.Item label="1" value="1"/>
-                                        <Picker.Item label="2" value="2"/>
-                                        <Picker.Item label="3" value="3"/>
-                                        <Picker.Item label="4" value="4"/>
-                                        <Picker.Item label="5" value="5"/>
-                                        <Picker.Item label="6" value="6"/>
-                                    </Picker>
-                                </View>
-                                <View style={{margin: 16}}>
-                                    <Button
-                                        title={'Chose photo'}
-                                        onPress={this.showImagePicker}/>
-                                </View>
-                            </Form>
-                            <View style={{
-                                margin: 32,
-                                flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                alignItems: 'center',
-                                alignContent: 'center',
-                            }}>
-                                <Button
-                                    title={'Close'}
-                                    color={'grey'}
-                                    onPress={() => this.setState({showPOIForm: false})}>
-                                </Button>
-                                <Button
-                                    title={'Save'}
-                                    onPress={this.addPOI}>
-                                </Button>
-                            </View>
-                        </Content>
-                    </Container>
-                </View>
-            );
-        }
     };
 
     showImagePicker = async () => {
         let result = await Expo.ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
+            base64: true
         }).catch(err => console.log(err));
 
         if (!result.cancelled) {
-            this.setState({POIToAddImages: this.state.POIToAddImages.concat([result.uri]) });
+            this.setState({POIToAddImages: this.state.POIToAddImages.concat([result.base64])});
         }
     };
 
+    hashCode = (s) => {
+        return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+    };
 
-    addPOI = () => {
-        const data = new FormData();
-        data.append('tourID', this.state.currentTourID);
-        data.append('POIToAddName', this.state.POIToAddName);
-        data.append('POIToAddDescription', this.state.POIToAddDescription);
-        data.append('POIToAddRating', this.state.POIToAddRating);
+    addPOI = async() => {
+        const poi = {};
+        poi.name = this.state.POIToAddName;
+        poi.description = this.state.POIToAddDescription;
+        poi.rating = this.state.POIToAddRating;
+        poi.id = this.hashCode(this.state.POIToAddName);
+        poi.location = (this.state.POIToAddLocation ? this.state.POIToAddLocation :
+            {lat: this.state.userLocation.latitude, lng:this.state.userLocation.longitude });
+        poi.images = this.state.POIToAddImages;
 
-        this.state.POIToAddImages.forEach((uri) => {
-            data.append('photo', {
-                uri: uri,
-                type: 'image/jpeg', // or photo.type
-                name: uri
-            });
-        });
+        firebase.database().ref('users/users/' + this.state.userID + '/tours').once('value')
+            .then(resp => {
+                let tours = resp.val();
+                if(!tours.find(e => e.id === this.state.currentTourID).places)
+                    tours.find(e => e.id === this.state.currentTourID).places = [];
 
-        console.log(data);
+                tours.find(e => e.id === this.state.currentTourID).places.push(poi);
 
-        fetch('http://localhost:8873/addPOI', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: data
-        }).then(res => res.json())
-            .then(resJson => {
-                //trzeba dodac poi na mapie i narysowac trase - do zrobienia
-                console.log(resJson)
+                firebase.database().ref('users/users/'+ this.state.userID)
+                    .update({ tours: tours})
+                    .then(res => {
+                        this.setState({showCustomPOIForm: false, showSelectedPOIForm: false});
+                        console.log(res)
+                    })
+                    .catch(err => console.log(err));
             })
             .catch(err => console.log(err));
-    }
+
+
+
+    };
 
     getCurrPosition = () => {
         navigator.geolocation.getCurrentPosition((location) => {
@@ -403,16 +444,6 @@ export default class CreateArticleScreen extends Component {
                             longitudeDelta: 0.0421,
                         }}
                     >
-                        {users[0].tour.places.map((place, i) => {
-                            return (
-                                <MapView.Marker
-                                    key={i}
-                                    coordinate={{latitude: place.location.lat, longitude: place.location.lng,}}
-                                    title={place.name}
-                                    description={place.description}
-                                />
-                            )
-                        })}
                         <MapView.Marker
                             coordinate={typeof this.state.userLocation.latitude === 'undefined' ? {} : {
                                 latitude: this.state.userLocation.latitude,
@@ -425,7 +456,8 @@ export default class CreateArticleScreen extends Component {
 
                     {this.state.start ? this.showButtons() : this.showStartButton()}
                     {this.state.showNearbyPOIList ? this.displayNearbyPOIList() : null}
-                    {this.state.showPOIForm ? this.displayPOIForm() : null}
+                    {this.state.showCustomPOIForm ? this.displayCustomPOIForm() : null}
+                    {this.state.showSelectedPOIForm ? this.displaySelectedPOIForm() : null}
                 </View>
             );
         }
