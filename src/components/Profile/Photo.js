@@ -6,7 +6,7 @@ const Photo = (props) => {
     return (
         <View
             style={styles.imgContainer}>
-            <Image source={{ uri: 'https://cdna.artstation.com/p/assets/images/images/001/218/728/large/yuri-shwedoff-warrior-internet.jpg' }}
+            <Image source={{ uri: props.profilePhoto }}
                 style={styles.img} />
         </View>
     )

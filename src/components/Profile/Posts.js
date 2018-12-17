@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Post from './Post';
 
 const images = [
@@ -17,18 +17,22 @@ const images = [
     'https://tasty-shop.ru/files/images/yshorns.jpg',
     'http://i.widelec.org/3hhd.jpg',
 ];
-
+const _onPressPost = () => {
+    console.log(' pressed!');
+}
 const Posts = props => {
     return (
         <View style={styles.postList}>
-            {renderPosts()}
+            {renderPosts(props)}
         </View>
     )
 }
 
-const renderPosts = () => {
-    return images.map((image, index) =>
-        <Post key={index} index={index} image={image} />
+const renderPosts = (props) => {
+    return props.posts.places.map((place, index) =>
+        <TouchableOpacity key={place.id}>
+            <Post index={index} image={place.images[0].url} />
+        </TouchableOpacity>
     )
 }
 

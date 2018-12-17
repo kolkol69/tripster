@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 import ProfileHead from './Head';
 import ProfileBody from './Body';
@@ -15,18 +15,26 @@ export class GetUserData extends Component {
     }
 
     componentDidMount() {
-        fetch(`http://e4cbdfb5.ngrok.io/user/${1}`)
+        fetch(`http://556c7787.ngrok.io/user/${2}`)
             .then(response => response.json())
-            .then(user => {console.log('user', user); this.setState({ user })});
+            .then(user => this.setState({ user }));
     }
     render() {
-        return (
-            <View>
-                <ProfileHead />
-                <ProfileBody />
+        if (Object.keys(this.state.user).length !== 0) {
 
-            </View>
-        )
+            return (
+                <View>
+                    <ProfileHead user={this.state.user}/>
+                    <ProfileBody user={this.state.user}/>
+                </View>
+            )
+        }else{
+            return (
+                <View>
+                    <Text>Loading ...</Text>
+                </View>
+            )
+        }
     }
 }
 

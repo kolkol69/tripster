@@ -7,11 +7,6 @@ import ProfileContent from './ContentSelector';
 
 class Body extends Component {
     state = {
-        name: 'Maks Kolodiy',
-        nickame: 'kolkol69',
-        following: 190,
-        followers: 256,
-        posts: 12,
         activeIndex: 0
     }
 
@@ -48,7 +43,7 @@ class Body extends Component {
                 </View>
 
                 {/** Height =width/3 so that image sizes vary according to size of the phone yet remain squares */}
-                <ProfileContent active={this.state.activeIndex} />
+                <ProfileContent usersPosts={this.props.user.tours[0]} active={this.state.activeIndex} />
             </View>
         )
     }

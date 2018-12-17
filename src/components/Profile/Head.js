@@ -7,17 +7,23 @@ import ProfileDescription from './Description';
 import ProfilePhoto from './Photo';
 
 const Head = (props) => {
+    const _followers = props.user.followers;
+    const _following = props.user.following;
+    const _profileImg = props.user.profileImage;
+    const _profileDescription = props.user.profileDescription;
+    const _username = props.user.name;
+    const _posts = props.user.tours[0].places;
     return (
         <View style={styles.head}>
             <View style={styles.info}>
-                <ProfilePhoto />
+                <ProfilePhoto profilePhoto={_profileImg} />
                 <View style={styles.stats}>
-                    <ProfileStats />
+                    <ProfileStats followers={_followers} following={_following} posts={_posts.length}/>
                     <ProfileButtons />
                 </View>
             </View>
             <View style={styles.description}>
-                <ProfileDescription/>
+                <ProfileDescription name={_username} description={_profileDescription}/>
             </View>
         </View>
     )

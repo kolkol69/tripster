@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Image, Dimensions, } from "react-native";
+import { View, StyleSheet, Image, Dimensions } from "react-native";
 
 const { height, width } = Dimensions.get('window');
+
 
 const Post = props => {
     return (

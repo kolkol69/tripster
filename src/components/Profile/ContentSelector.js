@@ -17,11 +17,11 @@ const ContentSelector = props => {
 const renderSection = (props) => {
     switch (props.active) {
         case 0:
-            return <ProfilePosts />
+            return <ProfilePosts posts={props.usersPosts}/>
         case 1:
-            return <ProfilePostCards />
+            return <ProfilePostCards posts={props.usersPosts}/>
         case 2:
-            return <ProfileSavedPosts />
+            return <ProfileSavedPosts posts={props.usersPosts}/>
     }
 }
 
