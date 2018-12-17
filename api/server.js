@@ -2,9 +2,20 @@ const express = require('express');
 // const path = require('path');
 // const open = require('open');
 const start_router = require('./routes/start');
+const fakeUsers = require('./routes/fakeUsers');
+const getPlaces = require('./routes/getPlaces');
+const startTour = require('./routes/startTour');
+const addPOI = require('./routes/addPOI');
+const getUserData = require('./routes/getUserData');
 
 const port = 8873;
 const app = express();
+//https://tripster-5fc5d.firebaseio.com/users/users
+
+
+// const readFromFB = () => {
+//   console.log('usersRef: \n', usersRef)
+// }
 
 app.use((req, res, next) => {
   const origin = req.get('origin');
@@ -17,7 +28,14 @@ app.use((req, res, next) => {
   req.method === 'OPTIONS' ? res.sendStatus(204) : next();
 });
 app.use('/', start_router);
-app.use('/test', start_router);
+app.use('/generateFakeUsers', fakeUsers);
+app.use('/getPlaces', getPlaces);
+app.use('/startTour', startTour);
+app.use('/addPOI/', addPOI);
+app.use('/user', getUserData);
+
+
+
 
 app.listen(port, (err) => {
   if (err) {

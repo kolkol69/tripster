@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 import { Icon, Button } from 'native-base';
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import ProfileContent from './ContentSelector';
 
 class Body extends Component {
@@ -16,13 +16,13 @@ class Body extends Component {
     }
 
     segmentClicked = (activeIndex) => {
-        this.setState({activeIndex});
+        this.setState({ activeIndex });
     }
-    
+
     render() {
         return (
             <View >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderTopWidth: 1, borderTopColor: '#eae5e5' }}>
+                <View style={styles.buttons}>
                     <Button
                         onPress={() => this.segmentClicked(0)}
                         transparent
@@ -38,7 +38,7 @@ class Body extends Component {
                     <Button
                         onPress={() => this.segmentClicked(2)}
                         transparent active={this.state.activeIndex == 2}>
-                        <Icon name="ios-bookmark" style={this.state.activeIndex == 2 ? {} : { color: 'grey' }}></Icon>
+                        <Icon name="ios-bookmark" style={this.state.activeIndex == 2 ? {} : { color: 'grey' }} />
                     </Button>
                     <Button
                         onPress={() => this.segmentClicked(3)}
@@ -54,12 +54,14 @@ class Body extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const styles = StyleSheet.create({
+    buttons: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        borderTopWidth: 1,
+        borderTopColor: '#eae5e5'
+    },
 
-})
+});
 
-const mapDispatchToProps = {
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Body)
+export default Body;

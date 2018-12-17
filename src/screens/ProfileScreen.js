@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Container, Content } from 'native-base';
 
-import ProfileHead from '../components/Profile/Head';
-import ProfileBody from '../components/Profile/Body';
-
+import AjaxUserData from '../components/Profile/GetUserData';
 
 class ProfileTab extends Component {
     static navigationOptions = {
@@ -15,8 +13,7 @@ class ProfileTab extends Component {
         return (
             <Container style={styles.container}>
                 <Content>
-                    <ProfileHead />
-                    <ProfileBody />
+                    <AjaxUserData userId={1}/>
                 </Content>
             </Container >
         );
