@@ -44,7 +44,10 @@ import {
     Dimensions,
     TextInput,
     Picker,
-    Image
+    Image,
+    Modal,
+    TouchableHighlight,
+    Alert
 } from 'react-native';
 
 const width = Dimensions.get('window').width; //full width
@@ -74,6 +77,8 @@ export default class CreateArticleScreen extends Component {
         POIToAddRating: '',
         POIToAddImages: [],
         POIToAddLocation: {},
+        modalVisibility: false,
+        previousClosestPlaceLocation: null
     };
 
     componentDidMount() {
@@ -83,6 +88,7 @@ export default class CreateArticleScreen extends Component {
     }
 
     onPressStart = () => {
+        setInterval(() => this.checkIfUserStaysLongEnoughInOnePlace(), 600000);
         this.setState({start: true});
 
         navigator.geolocation.watchPosition((currentLocation) => {
@@ -97,7 +103,7 @@ export default class CreateArticleScreen extends Component {
         firebase.database().ref('users/users/' + this.state.userID + '/tours').once('value')
             .then(resp => {
                 let tours = resp.val();
-                let id = Math.floor(Math.random() * 10000000);
+                let id = Math.floor(Math.random() * 100000000);
                 this.setState({currentTourID: id});
 
                 tours.push({
@@ -129,7 +135,7 @@ export default class CreateArticleScreen extends Component {
             }}>
                 <Button
                     onPress={this.onPressStart}
-                    title="Start"
+                    title="Start tour"
                 />
             </View>
         )
@@ -352,6 +358,96 @@ export default class CreateArticleScreen extends Component {
         }, err => console.log('Could not access location', err));
     }
 
+    checkIfUserStaysLongEnoughInOnePlace = () => {
+        fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?type=point_of_interest&rankby=distance&location=${this.state.userLocation.latitude},${this.state.userLocation.longitude}&key=${api}`)
+            .then(resp => resp.json())
+            .then(respJson => {
+                if (!this.state.previousClosestPlaceLocation || this.state.modalVisibility) {
+                    this.setState({previousClosestPlaceLocation: respJson.results[0].geometry.location});
+                    return;
+                }
+                let distance = this.getDistanceFromLatLonInKm(
+                    this.state.previousClosestPlaceLocation.lat,
+                    this.state.previousClosestPlaceLocation.lng,
+                    respJson.results[0].geometry.location.lat,
+                    respJson.results[0].geometry.location.lng);
+                if (distance <= 0.05) {
+                    fetch(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${respJson.results[0].place_id}&key=${api}`)
+                        .then(res => res.json())
+                        .then(resJson => {
+                            console.log('nein')
+                            this.setState({selectedPOI: resJson.result, modalVisibility: true})
+                        })
+                }
+            }).catch(err => console.log(err));
+    }
+
+
+    getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+        var R = 6371; // Radius of the earth in km
+        var dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
+        var dLon = this.deg2rad(lon2 - lon1);
+        var a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c; // Distance in km
+        return d;
+    }
+
+    deg2rad = (deg) => {
+        return deg * (Math.PI / 180)
+    }
+    suggestPOI = () => {
+        return (
+            <View style={{
+                zIndex: 2,
+                width: width,
+                position: 'absolute',
+            }}>
+                <Container>
+                    <Content>
+                        <Text style={{fontSize: 20}}>Do you want to add this poi to you tour?</Text>
+                        <View style={{margin: 16}}>
+                            <Text>Name</Text>
+                            <Text>{this.state.selectedPOI.name}</Text>
+                        </View>
+                        <View style={{margin: 16}}>
+                            <Text>Addred</Text>
+                            <Text>{this.state.selectedPOI.formatted_address}</Text>
+                        </View>
+                        <View style={{margin: 16}}>
+                            {this.state.selectedPOI.photos ?
+                                <Image style={{width: 100, height: 100}}
+                                       source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${this.state.selectedPOI.photos[0].photo_reference}&key=${api}`}}/>
+                                : null}
+                        </View>
+                        <View style={{
+                            margin: 32,
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            alignItems: 'center',
+                            alignContent: 'center',
+                        }}>
+                            <Button
+                                title={'Close'}
+                                color={'grey'}
+                                onPress={() => this.setState({modalVisibility: false})}>
+                            </Button>
+                            <Button
+                                title={'Add'}
+                                onPress={() => {this.setState({modalVisibility: false, displayPOIForm: true})}}>
+                            </Button>
+                        </View>
+
+                    </Content>
+                </Container>
+            </View>
+        );
+    }
+
+
     render() {
         if (Object.keys(this.state.userLocation).length === 0) {
             return (
@@ -386,9 +482,12 @@ export default class CreateArticleScreen extends Component {
                     {this.state.start ? this.showButtons() : this.showStartButton()}
                     {this.state.showNearbyPOIList ? this.displayNearbyPOIList() : null}
                     {this.state.showPOIForm ? this.displayPOIForm() : null}
+                    {this.state.modalVisibility ? this.suggestPOI() : null}
                 </View>
             );
         }
 
     }
+
+
 }
