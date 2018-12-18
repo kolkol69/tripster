@@ -1,9 +1,9 @@
 // root reducer
 import {combineReducers} from 'redux';
-import photoActivity from './photoActivity';
+import likeReducer from './likeReducer';
 
 const rootReducer = combineReducers({
-    photoActivity,
+    likes: likeReducer,
 });
 
 export default rootReducer;

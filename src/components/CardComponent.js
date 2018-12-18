@@ -7,13 +7,17 @@ import {
     Dimensions
 } from "react-native";
 import Carousel from './Carousel';
+import {connect} from 'react-redux';
+import {likePost} from '../actions/likeAction';
+
+
 
 import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'native-base'
 
 class CardComponent extends Component {
 
     state = {
-        likes: typeof this.props.postDetails.images[0].likes == 'undefined' ? 0 : this.props.postDetails.images[0].likes.length,
+        // likes: typeof this.props.postDetails.images[0].likes == 'undefined' ? 0 : this.props.postDetails.images[0].likes.length,
         likeActive: false,
         saved: false,
     }
@@ -48,8 +52,8 @@ class CardComponent extends Component {
                 </CardItem>
                 <CardItem style={{ height: 45 }}>
                     <Left>
-                        <Text style={{ marginRight: 5 }}>{this.state.likes}</Text>
-                        <Button onPress={() => { this.onLikePress() }} transparent>
+                        <Text style={{ marginRight: 5 }}>{this.props.likes}</Text>
+                        <Button onPress={() => { this.onLikePress(); this.props.likePost() }} transparent>
                             <Icon name="ios-heart" style={this.state.likeActive ? { color: 'red' } : { color: 'black' }} />
                         </Button>
                         <Button transparent>
@@ -83,14 +87,27 @@ class CardComponent extends Component {
     }
 
     onLikePress = () => {
-        console.log('liked');
+        console.log('liked', Object.keys(this.props));
         this.setState({
             likeActive: !this.state.likeActive,
-            likes: this.state.likeActive ? this.state.likes - 1 : this.state.likes + 1,
+            // likes: this.state.likeActive ? this.props.likes - 1 : this.props.likes + 1,
         });
     }
 }
-export default CardComponent;
+
+function mapDispatchToProps (dispatch) {
+    return {
+        likePost: ()=> dispatch(likePost()),
+    }
+}
+function mapStateToProps (state) {
+    return {
+        likes: state.likes
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardComponent);
+// export default CardComponent;
 
 const styles = StyleSheet.create({
     container: {

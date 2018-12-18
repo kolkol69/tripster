@@ -2,10 +2,11 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './src/navigation/AppNavigator';
-// import { Provider } from 'react-redux';
-// import configureStore from './src/store/configureStore';
+import { Provider } from 'react-redux';
+import configureStore from './src/store/configureStore';
+import initialState from './src/reducers/initialState';
 
-// const store = configureStore();
+const store = configureStore();
 
 export default class App extends React.Component {
   state = {
@@ -25,12 +26,12 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        // <Provider store={store} >
+        <Provider store={store} >
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             <AppNavigator />
           </View>
-        // </Provider >
+         </Provider >
       );
     }
   }

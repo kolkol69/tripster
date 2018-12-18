@@ -19,7 +19,7 @@ var database = firebase.database();
 
 function getUserData(res, userId = 0) {
     var usersRef = database.ref('users');
-    usersRef.on('value',  (snapshot) => {
+    usersRef.once('value',  (snapshot) => {
         snapshot.forEach( (childSnapshot) => {
             var childData = childSnapshot.val();
             res.send(childData[userId]);

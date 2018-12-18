@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as firebase from 'firebase';
-
+import {Permissions} from 'expo';
 // Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyDJ7VPaMgmjFU0bPDnnDW97lvGSwBGPwYI",
@@ -267,7 +267,7 @@ export default class CreateArticleScreen extends Component {
                                     <Picker.Item label="6" value="6"/>
                                 </Picker>
                             </View>
-                            <View style={{margin: 32}}>
+                            <View style={{margin: 10}}>
                                 <Button
                                     title={'Chose photo'}
                                     onPress={this.showImagePicker}/>
@@ -297,6 +297,7 @@ export default class CreateArticleScreen extends Component {
     };
 
     showImagePicker = async () => {
+        const { cameraRollStatus } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         let result = await Expo.ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             base64: true
