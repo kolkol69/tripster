@@ -2,16 +2,22 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import CardComponent from '../CardComponent';
 
+import { View } from 'react-native';
+
 const SavedPosts = (props) => {
-    return <View/>
-    // return <CardComponent imageSource="1" likes="101" />
+    return (
+        <View>
+            {findSavedPost(props)}
+        </View>
+    )
+}
+const findSavedPost = (props) => {
+    return props.savedPostsIDs.map(id => <CardComponent key={id} {...props} postDetails={findSelectedPost(props, id)} />);
 }
 
-// const findSelectedPost = (props, id) => {
-//     let a = props.posts.places.filter(place => place.id === id)[0];
-//     // console.log(a)
-//     return a;
-// }
+const findSelectedPost = (props, id) => {
+    return props.posts.places.filter(place => place.id === id)[0];
+}
 
 SavedPosts.propTypes = {
 

@@ -13,6 +13,7 @@ class CardComponent extends Component {
     state = {
         likes: typeof this.props.postDetails.images[0].likes == 'undefined' ? 0 : this.props.postDetails.images[0].likes.length,
         likeActive: false,
+        saved: false,
     }
 
     render() {
