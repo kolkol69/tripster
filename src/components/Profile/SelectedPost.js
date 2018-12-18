@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import CardComponent from '../CardComponent';
 
-
-
 const SelectedPost = (props) => {
     return (
         <CardComponent {...props} postDetails={findSelectedPost(props)}/>

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import ProfilePosts from './Posts';
 import ProfilePostCards from './PostCards';
 import ProfileSavedPosts from './SavedPosts';
+import ProfileTestScreen from './TestScreen';
 import {View} from 'react-native';
 
 const ContentSelector = props => {
     return (
         <View >
-            {/** Height =width/3 so that image sizes vary according to size of the phone yet remain squares **/}
             {renderSection(props)}
         </View>
     )
@@ -22,6 +22,8 @@ const renderSection = (props) => {
             return <ProfilePostCards {...props}  posts={props.usersPosts}/>
         case 2:
             return <ProfileSavedPosts {...props} savedPostsIDs={[3573,4705, 4130]} posts={props.usersPosts}/>
+        case 3:
+            return <ProfileTestScreen {...props} savedPostsIDs={[3573]} posts={props.usersPosts}/>
     }
 }
 

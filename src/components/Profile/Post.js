@@ -10,7 +10,6 @@ const test = (index) => {
 
 const Post = props => {
     return (
-        // <TouchableOpacity onPress={()=>{test.bind(props.index)}} style={[styles.container, props.index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
         <View style={[styles.container, props.index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
             <Image style={styles.post}
                 source={{ uri: `${props.image}` }}>
