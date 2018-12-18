@@ -1,14 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import CardComponent from '../CardComponent';
-import { View }from 'react-native'
+import { View } from 'react-native'
 function PostCards(props) {
     return (
         <View>
-            {/* <CardComponent imageSource="1" likes="101" />
-            <CardComponent imageSource="2" likes="101" />
-            <CardComponent imageSource="3" likes="101" /> */}
+            {showCards(props)}
         </View>
+    )
+}
+
+const showCards = (props) => {
+    return (
+        props.posts.places.map( place => <CardComponent key={place.id} {...props} postDetails={place} />)
     )
 }
 

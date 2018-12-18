@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
 import ProfileHead from './Head';
 import ProfileBody from './Body';
+
+import Spinner from '../Spinner';
 
 export class GetUserData extends Component {
     // static propTypes = {
@@ -30,10 +32,8 @@ export class GetUserData extends Component {
             )
         }else{
             return (
-                <View>
-                    <Text>Loading ...</Text>
-                </View>
-            )
+                <Spinner/>
+              )
         }
     }
 }

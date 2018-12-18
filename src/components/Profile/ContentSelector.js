@@ -19,9 +19,9 @@ const renderSection = (props) => {
         case 0:
             return <ProfilePosts {...props} posts={props.usersPosts}/>
         case 1:
-            return <ProfilePostCards {...props} posts={props.usersPosts}/>
+            return <ProfilePostCards {...props}  posts={props.usersPosts}/>
         case 2:
-            return <ProfileSavedPosts {...props} posts={props.usersPosts}/>
+            return <ProfileSavedPosts {...props} savedPostsIDs={[4130,3573,4705]} posts={props.usersPosts}/>
     }
 }
 

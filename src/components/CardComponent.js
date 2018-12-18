@@ -11,12 +11,11 @@ import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'nati
 class CardComponent extends Component {
 
     state = {
-        likes: this.props.postDetails.images[0].likes.length,
+        likes: typeof this.props.postDetails.images[0].likes == 'undefined' ? 0 : this.props.postDetails.images[0].likes.length,
         likeActive: false,
     }
 
     render() {
-
         const images = this.props.postDetails.images[0];
 
         return (
@@ -37,7 +36,6 @@ class CardComponent extends Component {
                     <Left>
                         <Text style={{ marginRight: 5 }}>{this.state.likes}</Text>
                         <Button onPress={()=>{this.onLikePress()}} transparent>
-                        {/* style={this.state.activeIndex == 2 ? {} : { color: 'grey' }} */}
                             <Icon name="ios-heart" style={this.state.likeActive ? {color: 'red' } : { color: 'black' }} />
                         </Button>
                         <Button transparent>
@@ -46,8 +44,6 @@ class CardComponent extends Component {
                         <Button transparent>
                             <Icon name="ios-send" style={{ color: 'black' }} />
                         </Button>
-
-
                     </Left>
                 </CardItem>
                 <CardItem>

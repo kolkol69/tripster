@@ -7,6 +7,12 @@ const SavedPosts = (props) => {
     // return <CardComponent imageSource="1" likes="101" />
 }
 
+// const findSelectedPost = (props, id) => {
+//     let a = props.posts.places.filter(place => place.id === id)[0];
+//     // console.log(a)
+//     return a;
+// }
+
 SavedPosts.propTypes = {
 
 }

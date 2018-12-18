@@ -35,7 +35,6 @@ class Posts extends Component {
     }
 }
 
-
 Posts.propTypes = {
 
 }
