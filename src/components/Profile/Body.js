@@ -43,7 +43,7 @@ class Body extends Component {
                 </View>
 
                 {/** Height =width/3 so that image sizes vary according to size of the phone yet remain squares */}
-                <ProfileContent usersPosts={this.props.user.tours[0]} active={this.state.activeIndex} />
+                <ProfileContent {...this.props} usersPosts={this.props.user.tours[0]} active={this.state.activeIndex} />
             </View>
         )
     }

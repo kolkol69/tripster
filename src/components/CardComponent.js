@@ -10,33 +10,35 @@ import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'nati
 
 class CardComponent extends Component {
 
+    state = {
+        likes: this.props.postDetails.images[0].likes.length,
+        likeActive: false,
+    }
+
     render() {
 
-        const images = {
-
-            "1": 'https://cdna.artstation.com/p/assets/images/images/001/496/724/large/yuri-shwedoff-shaman-internet.jpg',
-            "2": 'https://dspncdn.com/a1/media/692x/b8/ec/d7/b8ecd7dccd8e12d7812ee79575009279.jpg',
-            "3": 'https://wowxwow.com/wp-content/uploads/2015/08/YShwedoff-Wolf-Pack.jpg'
-        }
+        const images = this.props.postDetails.images[0];
 
         return (
             <Card>
                 <CardItem>
                     <Left>
-                        <Thumbnail source={{uri: 'https://cdna.artstation.com/p/assets/images/images/001/218/728/large/yuri-shwedoff-warrior-internet.jpg'}} />
+                        <Thumbnail source={{ uri: `${this.props.user.profileImage}` }} />
                         <Body>
-                            <Text>kolodiy </Text>
-                            <Text note>Jan 15, 2018</Text>
+                            <Text>{this.props.user.name}</Text>
+                            <Text note>{this.props.user.tours[0].startDate}</Text>
                         </Body>
                     </Left>
                 </CardItem>
                 <CardItem cardBody>
-                    <Image source={{uri: `${images[this.props.imageSource]}`}} style={{ height: 200, width: null, flex: 1 }} />
+                    <Image source={{ uri: images.url }} style={{ height: 200, width: null, flex: 1 }} />
                 </CardItem>
                 <CardItem style={{ height: 45 }}>
                     <Left>
-                        <Button transparent>
-                            <Icon name="ios-heart" style={{ color: 'black' }} />
+                        <Text style={{ marginRight: 5 }}>{this.state.likes}</Text>
+                        <Button onPress={()=>{this.onLikePress()}} transparent>
+                        {/* style={this.state.activeIndex == 2 ? {} : { color: 'grey' }} */}
+                            <Icon name="ios-heart" style={this.state.likeActive ? {color: 'red' } : { color: 'black' }} />
                         </Button>
                         <Button transparent>
                             <Icon name="ios-chatbubbles" style={{ color: 'black' }} />
@@ -48,21 +50,28 @@ class CardComponent extends Component {
 
                     </Left>
                 </CardItem>
-
-                <CardItem style={{ height: 20 }}>
-                    <Text>{this.props.likes} likes</Text>
-                </CardItem>
                 <CardItem>
                     <Body>
                         <Text>
-                            <Text style={{ fontWeight: "900" }}>kolodiy </Text>
-                            Ea do Lorem occaecat laborum do. Minim ullamco ipsum minim eiusmod dolore cupidatat magna exercitation amet proident qui. Est do irure magna dolor adipisicing do quis labore excepteur. Commodo veniam dolore cupidatat nulla consectetur do nostrud ea cupidatat ullamco labore. Consequat ullamco nulla ullamco minim.
+                            <Text style={{ fontWeight: "900", marginRight: 5 }}>{this.props.user.name}</Text>
+                            <Text> {this.props.postDetails.images[0].description} </Text>
                         </Text>
                     </Body>
                 </CardItem>
             </Card>
         );
     }
+    onLikePress = () => {
+        console.log('liked');
+        this.setState({
+            likeActive: !this.state.likeActive,
+            likes: this.state.likeActive ? this.state.likes - 1 : this.state.likes + 1,
+        });
+    }
+    // onCommentPress = () => {
+    //     this.setState({
+    //     });
+    // }
 }
 export default CardComponent;
 

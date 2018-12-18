@@ -11,7 +11,8 @@
         "endDate": "2019-01-30T22:41:01.002Z",
         "id": 4380,
         "likes": [0, 1],
-        "places": [{
+        "places": [
+            {
             "description": "Lorem ipsum tristique scelerisque curae gravida massa facilisis, leo la",
             "id": 7475,
             "images": [{
