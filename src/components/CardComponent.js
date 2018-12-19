@@ -54,7 +54,7 @@ class CardComponent extends Component {
                     <Left>
                         <Text style={{ marginRight: 5 }}>{this.props.likes.likes}</Text>
                         <Button onPress={() => { this.onLikePress(); this.props.likePost() }} transparent>
-                            <Icon name="ios-heart" style={this.state.likeActive ? { color: 'red' } : { color: 'black' }} />
+                            <Icon name="ios-heart" style={this.props.likes.isLiked ? { color: 'red' } : { color: 'black' }} />
                         </Button>
                         <Button transparent>
                             <Icon name="ios-chatbubbles" style={{ color: 'black' }} />
@@ -102,7 +102,8 @@ function mapDispatchToProps (dispatch) {
 function mapStateToProps (state) {
     
     return {
-        likes: state.likes
+        likes: state.likes,
+        isLiked: state.isLiked
     }
 }
 

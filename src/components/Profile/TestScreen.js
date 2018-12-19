@@ -5,8 +5,8 @@ import { View, StyleSheet, Dimensions, Image } from 'react-native';
 
 const { height, width } = Dimensions.get('window');
 
-const sliderWidth = width-50;
-const itemWidth = width-100;
+const sliderWidth = width;
+const itemWidth = width-60;
 const SavedPosts = (props) => {
     return (
         <Carousel
