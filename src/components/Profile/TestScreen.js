@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Carousel from '../Carousel';
+import TestMap from './TestMap'
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
 
 const { height, width } = Dimensions.get('window');
@@ -9,13 +10,14 @@ const sliderWidth = width;
 const itemWidth = width-60;
 const SavedPosts = (props) => {
     return (
-        <Carousel
-            ref={(c) => { this._carousel = c; }}
-            data={getImages(props)}
-            renderItem={_renderItem}
-            sliderWidth={sliderWidth}
-            itemWidth={itemWidth}
-        />
+        // <Carousel
+        //     ref={(c) => { this._carousel = c; }}
+        //     data={getImages(props)}
+        //     renderItem={_renderItem}
+        //     sliderWidth={sliderWidth}
+        //     itemWidth={itemWidth}
+        // />
+        <TestMap/>
     )
 }
 const _renderItem = ({ item, index }) => {
@@ -28,6 +30,7 @@ const _renderItem = ({ item, index }) => {
 
 const getImages = (props) => {
     const places = findSelectedPost(props, props.savedPostsIDs[0]);
+    places.images.push();
     return places.images;
 }
 

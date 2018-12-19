@@ -13,7 +13,7 @@ class ProfileTab extends Component {
         return (
             <Container style={styles.container}>
                 <Content>
-                    <AjaxUserData userId={1}/>
+                    <AjaxUserData userId={2}/>
                 </Content>
             </Container >
         );

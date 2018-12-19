@@ -7,10 +7,8 @@ import {
     Dimensions
 } from "react-native";
 import Carousel from './Carousel';
-import {connect} from 'react-redux';
-import {likePost} from '../actions/likeAction';
-
-
+import { connect } from 'react-redux';
+import { likePost, dislikePost } from '../actions/likeAction';
 
 import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'native-base'
 
@@ -41,7 +39,6 @@ class CardComponent extends Component {
                     </Left>
                 </CardItem>
                 <CardItem cardBody>
-                    {/* <Image source={{ uri: images.url }} style={{ height: 200, width: null, flex: 1 }} /> */}
                     <Carousel
                         ref={(c) => { this._carousel = c; }}
                         data={this.getImages(this.props)}
@@ -53,8 +50,8 @@ class CardComponent extends Component {
                 <CardItem style={{ height: 45 }}>
                     <Left>
                         <Text style={{ marginRight: 5 }}>{this.props.likes.likes}</Text>
-                        <Button onPress={() => { this.onLikePress(); this.props.likePost() }} transparent>
-                            <Icon name="ios-heart" style={this.props.likes.isLiked ? { color: 'red' } : { color: 'black' }} />
+                        <Button onPress={() => { this.onLikePress()}} transparent>
+                            <Icon name="ios-heart" style={this.state.likeActive ? { color: 'red' } : { color: 'black' }} />
                         </Button>
                         <Button transparent>
                             <Icon name="ios-chatbubbles" style={{ color: 'black' }} />
@@ -91,19 +88,19 @@ class CardComponent extends Component {
             likeActive: !this.state.likeActive,
             // likes: this.state.likeActive ? this.props.likes - 1 : this.props.likes + 1,
         });
+        this.state.likeActive ? this.props.dislikePost() : this.props.likePost();
     }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
     return {
-        likePost: ()=> dispatch(likePost()),
+        likePost: () => dispatch(likePost()),
+        dislikePost: () => dispatch(dislikePost()),
     }
 }
-function mapStateToProps (state) {
-    
+function mapStateToProps(state) {
     return {
         likes: state.likes,
-        isLiked: state.isLiked
     }
 }
 
