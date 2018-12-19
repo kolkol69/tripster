@@ -14,17 +14,10 @@ var firebaseConfig = {
 };
 
 import {
-    Left,
-    Thumbnail,
     TextInput,
-    ListItem,
-    Body,
-    List,
     FlatList,
-    Container,
     Button,
     Dimensions,
-    Content,
     Form,
     Item,
     Input,
@@ -36,6 +29,20 @@ import {
     View,
     StatusBar
 } from 'react-native';
+
+
+import {
+    Body,
+    Left,
+    Right,
+    Icon,
+    ListItem,
+    Container,
+    Header,
+    Content,
+    List,
+    Thumbnail,
+} from 'native-base'
 
 const instructions = Platform.select({
     ios: 'shake for dev menu',
@@ -71,7 +78,7 @@ export default class ExploreScreen extends Component {
         //get users from database and set 'elements' accordingly
         firebase.database().ref('/users/users/').orderByChild('name').equalTo(this.state.text).once('value')
             .then(resp => {//this makes it so users are set to be displayed and not tours
-                this.setState({elements: resp.val(),tours: false,users: true});
+                this.setState({elements: Object.values(resp.val()),tours: false,users: true});
                 console.log(this.state.elements);
                 console.log(this.state.users);
             });
@@ -136,12 +143,12 @@ export default class ExploreScreen extends Component {
             );
         }
         else {
-            console.log("returning user list");
+            console.log("list");
             return (
                 <View style={{
-                    //zIndex: 2,
+                    zIndex: 2,
                     width: width,
-                    top: 60,
+                    top: 100,
                     position: 'absolute',
                 }}>
                     <Container>
@@ -150,11 +157,18 @@ export default class ExploreScreen extends Component {
                                 <FlatList
                                     data={this.state.elements}
                                     renderItem={({item}) => (
-                                        <ListItem
-                                            title={`${item.name}`}
-                                            avatar={{ uri: item.profileImage }}
-                                            subtitle={`${item.region}`}
-                                        />
+                                        <ListItem avatar>
+                                            <Left>
+                                                <Thumbnail source={{ uri: item.profileImage }} />
+                                            </Left>
+                                            <Body>
+                                            <Text>{item.name}</Text>
+                                            <Text note>{item.region}</Text>
+                                            </Body>
+                                            <Right>
+                                                <Icon name="arrow-forward" />
+                                            </Right>
+                                        </ListItem>
                                     )}
                                 />
                             </List>
@@ -165,7 +179,18 @@ export default class ExploreScreen extends Component {
 
     }
 
-    /* keyExtractor={(item, index) => index.toString()}
+    /*
+
+
+
+
+
+     title={`${item.name}`}
+                                        avatar={{ uri: item.profileImage }}
+                                        subtitle={`${item.region}`}
+                                    /
+
+    keyExtractor={(item, index) => index.toString()}
 
                                         <Left>
                                           <Thumbnail square source={{uri: item.result.profileImage}}/>
