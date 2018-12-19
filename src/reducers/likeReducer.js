@@ -4,13 +4,12 @@ const initialState = {
     likes: 0,
 }
 
-export default function likeReducer(state = initialState.likes, action) {
+export default function likeReducer(state = initialState, action) {
     switch (action.type) {
         case types.LIKE_POST_SUCCESS:
-            debugger;
             return {
                 ...state,
-                likes: state + 1,
+                likes: state.likes +1
             }
         default:
             return state;
