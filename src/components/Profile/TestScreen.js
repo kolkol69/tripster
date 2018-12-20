@@ -7,30 +7,44 @@ import { View, StyleSheet, Dimensions, Image } from 'react-native';
 const { height, width } = Dimensions.get('window');
 
 const sliderWidth = width;
-const itemWidth = width-60;
+const itemWidth = width - 100;
 const SavedPosts = (props) => {
     return (
-        // <Carousel
-        //     ref={(c) => { this._carousel = c; }}
-        //     data={getImages(props)}
-        //     renderItem={_renderItem}
-        //     sliderWidth={sliderWidth}
-        //     itemWidth={itemWidth}
-        // />
-        <TestMap/>
+        <View>
+            <Carousel
+                ref={(c) => { this._carousel = c; }}
+                data={getImages(props)}
+                renderItem={_renderItem}
+                sliderWidth={sliderWidth}
+                itemWidth={itemWidth}
+            />
+            {/* <TestMap /> */}
+        </View>
     )
 }
 const _renderItem = ({ item, index }) => {
-    return (
-        <View style={styles.slide}>
-            <Image source={{ uri: item.url }} style={{ height: 200, width: null, flex: 1 }} />
-        </View>
-    );
+    if (index == 0) {
+        return item();
+    } else {
+        return (
+            <View style={styles.slide}>
+                <Image source={{ uri: item.url }} style={{ height: 200, width: null, flex: 1 }} />
+            </View>
+        );
+    }
 }
 
 const getImages = (props) => {
-    const places = findSelectedPost(props, props.savedPostsIDs[0]);
-    places.images.push();
+    let places = [];
+    places.images = [];
+    let selectedPosts = findSelectedPost(props, props.savedPostsIDs[0]);
+
+    places.images.push(()=><TestMap/>)
+    selectedPosts.images.forEach((img)=>{places.images.push(img)});
+    console.log('>>> places.images: \n', ...places.images);
+    console.log('>>> places.images.length: \n', places.images.length);
+    // places = findSelectedPost(props, props.savedPostsIDs[0]);
+    // places.images.push();
     return places.images;
 }
 

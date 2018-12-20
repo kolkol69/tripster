@@ -7,23 +7,19 @@ import ProfileDescription from './Description';
 import ProfilePhoto from './Photo';
 
 const Head = (props) => {
-    const _followers = props.user.followers;
-    const _following = props.user.following;
-    const _profileImg = props.user.profileImage;
-    const _profileDescription = props.user.profileDescription;
-    const _username = props.user.name;
-    const _posts = props.user.tours[0].places;
+    const {followers, following, profileImage, profileDescription, name} = props.user;
+    const postsAmount = props.user.tours[0].places.length;
     return (
         <View style={styles.head}>
             <View style={styles.info}>
-                <ProfilePhoto profilePhoto={_profileImg} />
+                <ProfilePhoto profilePhoto={profileImage} />
                 <View style={styles.stats}>
-                    <ProfileStats followers={_followers} following={_following} posts={_posts.length}/>
+                    <ProfileStats followers={followers} following={following} posts={postsAmount}/>
                     <ProfileButtons />
                 </View>
             </View>
             <View style={styles.description}>
-                <ProfileDescription name={_username} description={_profileDescription}/>
+                <ProfileDescription name={name} description={profileDescription}/>
             </View>
         </View>
     )
@@ -45,7 +41,14 @@ const styles = StyleSheet.create({
 });
 
 Head.propTypes = {
-
+    user: PropTypes.shape({
+        followers:PropTypes.number.isRequired,
+        following:PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        tours: PropTypes.array.isRequired,
+        profileImage: PropTypes.string.isRequired,
+        profileDescription: PropTypes.string.isRequired
+    }).isRequired
 }
 
 export default Head

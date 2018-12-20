@@ -7,9 +7,10 @@ export default class TestMap extends Component {
     render() {
         // debugger;
         return (
-            <View style={{ position: 'relative', flex: 1 }}>
+            <View style={{ flex: 1 }}>
                 <MapView
-                    style={StyleSheet.absoluteFillObject}
+                    style={{ flex: 1 }}
+                    // style={StyleSheet.absoluteFillObject}
                     initialRegion={{
                         latitude: 50.0646501,
                         longitude: 19.9449799,
@@ -26,7 +27,7 @@ export default class TestMap extends Component {
                         description={'DESCR'}
                     />
                 </MapView>
-             </View>
+              </View>
         )
     }
 }

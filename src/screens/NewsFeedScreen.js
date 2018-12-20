@@ -7,6 +7,10 @@ import {
     View,
     StatusBar
 } from 'react-native';
+import { MapView } from 'react-native'
+import TestMap from '../components/Profile/TestMap';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
+
 
 const instructions = Platform.select({
     ios: 'shake for dev menu',
@@ -20,23 +24,21 @@ export default class NewsFeedScreen extends Component {
 
     render() {
         return (
-            <ScrollView >
-                <View style={styles.container}>
-                    <StatusBar
-                        barStyle="light-content"
-                        backgroundColor="#4F6D7A"
-                    />
-                    <Text style={styles.welcome}>
-                        News Feed are commin
-                    </Text>
-                    <Text style={styles.instructions}>
-                        News Feed are commin
-                    </Text>
-                    <Text style={styles.instructions}>
-                        {instructions}
-                    </Text>
-                </View>
-            </ScrollView>
+            <Container>
+                <Header style={{height: 100}}>
+                    <Title>TEST</Title>
+                </Header>
+
+                    <TestMap/>
+
+                <Footer style={{height: 100}}>
+                    <FooterTab>
+                        <Button transparent>
+                            <Icon name='ios-call' />
+                        </Button>
+                    </FooterTab>
+                </Footer>
+            </Container>
         );
     }
 }
@@ -44,9 +46,9 @@ export default class NewsFeedScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#4F6D7A',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // backgroundColor: '#4F6D7A',
     },
     welcome: {
         fontSize: 20,

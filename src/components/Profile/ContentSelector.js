@@ -24,7 +24,7 @@ const renderSection = (props) => {
             return <ProfileSavedPosts {...props} savedPostsIDs={[3573,4705, 4130]} posts={props.usersPosts}/>
         case 3:
             // return <ProfileSavedPosts {...props} savedPostsIDs={[4705]} posts={props.usersPosts}/>
-            return <ProfileTestScreen/>
+            return <ProfileTestScreen {...props} savedPostsIDs={[4705, 4130]} posts={props.usersPosts}/>
     }
 }
 

@@ -10,28 +10,28 @@ import Carousel from './Carousel';
 import { connect } from 'react-redux';
 import { likePost, dislikePost } from '../actions/likeAction';
 
+import TestMap from './Profile/TestMap';
+
 import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'native-base'
 
 class CardComponent extends Component {
 
     state = {
-        // likes: typeof this.props.postDetails.images[0].likes == 'undefined' ? 0 : this.props.postDetails.images[0].likes.length,
         likeActive: false,
         saved: false,
     }
 
     render() {
         const { height, width } = Dimensions.get('window');
-
+        const { profileImage, name } = this.props.user;
         const sliderWidth = width;
         const itemWidth = width - 60;
-        // const images = this.props.postDetails.images[0];
 
         return (
             <Card>
                 <CardItem>
                     <Left>
-                        <Thumbnail source={{ uri: `${this.props.user.profileImage}` }} />
+                        <Thumbnail source={{ uri: `${profileImage}` }} />
                         <Body>
                             <Text>{this.props.user.name}</Text>
                             <Text note>{this.props.user.tours[0].startDate}</Text>
@@ -49,8 +49,8 @@ class CardComponent extends Component {
                 </CardItem>
                 <CardItem style={{ height: 45 }}>
                     <Left>
-                        <Text style={{ marginRight: 5 }}>{this.props.likes.likes}</Text>
-                        <Button onPress={() => { this.onLikePress()}} transparent>
+                        <Text style={{ marginRight: 5 }}>{this.props.likes}</Text>
+                        <Button onPress={() => { this.onLikePress() }} transparent>
                             <Icon name="ios-heart" style={this.state.likeActive ? { color: 'red' } : { color: 'black' }} />
                         </Button>
                         <Button transparent>
@@ -64,7 +64,7 @@ class CardComponent extends Component {
                 <CardItem>
                     <Body>
                         <Text>
-                            <Text style={{ fontWeight: "900", marginRight: 5 }}>{this.props.user.name}</Text>
+                            <Text style={{ fontWeight: "900", marginRight: 5 }}>{name}</Text>
                             <Text> {this.props.postDetails.images[0].description} </Text>
                         </Text>
                     </Body>
@@ -73,14 +73,27 @@ class CardComponent extends Component {
         );
     }
     _renderItem = ({ item, index }) => {
-        return (
-            <View style={styles.slide}>
-                <Image source={{ uri: item.url }} style={{ height: 300, width: null, flex: 1 }} />
-            </View>
-        );
+
+        if (index == 0) {
+            return item();
+        } else {
+            return (
+                <View style={styles.slide}>
+                    <Image source={{ uri: item.url }} style={{ height: 300, width: null, flex: 1 }} />
+                </View>
+            );
+        }
+
     }
     getImages = () => {
-        return this.props.postDetails.images;
+        let places = [];
+        places.images = [];
+        let selectedPosts = this.props.postDetails;
+
+        places.images.push(() => <TestMap />)
+        selectedPosts.images.forEach((img) => { places.images.push(img) });
+
+        return places.images;
     }
 
     onLikePress = () => {
@@ -100,7 +113,7 @@ function mapDispatchToProps(dispatch) {
 }
 function mapStateToProps(state) {
     return {
-        likes: state.likes,
+        likes: state.likes.likes,
     }
 }
 

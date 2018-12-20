@@ -11,7 +11,6 @@ import Spinner from '../Spinner';
 export class GetUserData extends Component {
     componentDidMount() {
         this.props.fetchUsers(this.props.userId);
-        // console.log('componentDidMount==========>', Object.keys(this.props.usersData));
     }
     render() {
         if (Object.keys(this.props.usersData).length !== 0) {
@@ -30,7 +29,6 @@ export class GetUserData extends Component {
 }
 
 function mapStateToProps(state) {
-    // console.log('>>>STATE:', state.fetchedUsers.loading);
     return {
         usersData: state.fetchedUsers.usersData,
         loading: state.fetchedUsers.loading
