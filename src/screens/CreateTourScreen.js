@@ -78,7 +78,8 @@ export default class CreateArticleScreen extends Component {
         POIToAddImages: [],
         POIToAddLocation: {},
         modalVisibility: false,
-        previousClosestPlaceLocation: null
+        previousClosestPlaceLocation: null,
+        intervalID: null,
     };
 
     componentDidMount() {
@@ -88,8 +89,8 @@ export default class CreateArticleScreen extends Component {
     }
 
     onPressStart = () => {
-        setInterval(() => this.checkIfUserStaysLongEnoughInOnePlace(), 600000);
-        this.setState({start: true});
+        let intervalID = setInterval(() => this.checkIfUserStaysLongEnoughInOnePlace(), 6000);
+        this.setState({intervalID, start: true});
 
         navigator.geolocation.watchPosition((currentLocation) => {
             this.setState({
@@ -115,7 +116,6 @@ export default class CreateArticleScreen extends Component {
                 });
 
                 firebase.database().ref('users/users/' + this.state.userID)
-                    .update({tours: tours})
                     .then(res => console.log('tours updated', res))
                     .catch(err => console.log('tours updated err', err));
             })
@@ -154,8 +154,12 @@ export default class CreateArticleScreen extends Component {
                 alignContent: 'center',
             }}>
                 <Button
-                    onPress={() => this.setState({start: false})}
+                    onPress={() => {
+                        clearInterval(this.state.intervalID);
+                        this.setState({start: false});
+                    }}
                     title="Stop"
+                
                 />
                 <Button
                     onPress={this.onPressAddPOI}
@@ -437,7 +441,10 @@ export default class CreateArticleScreen extends Component {
                             </Button>
                             <Button
                                 title={'Add'}
-                                onPress={() => this.setState({modalVisibility: false, displayPOIForm: true})}>
+                                onPress={() => {
+                                    clearInterval(this.state.intervalID);
+                                    this.setState({modalVisibility: false, showPOIForm: true})
+                                    }}>
                             </Button>
                         </View>
 
