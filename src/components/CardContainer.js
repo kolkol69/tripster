@@ -2,16 +2,11 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Carousel from './Carousel';
 import {
-    View,
     Text,
-    StyleSheet,
-    Image,
     Dimensions
 } from "react-native";
 import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'native-base'
 
-// const CardContainer = props => {
-// const { profileImage, name } = this.props.user;
 class CardContainer extends Component {
 
     render() {

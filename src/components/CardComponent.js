@@ -1,33 +1,22 @@
 import React, { Component } from "react";
 import {
     View,
-    Text,
     StyleSheet,
     Image,
-    Dimensions
 } from "react-native";
-import Carousel from './Carousel';
 import { connect } from 'react-redux';
 import { likePost, dislikePost } from '../actions/likeAction';
 
 import TestMap from './Profile/TestMap';
-
-// import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'native-base'
 import Card from './CardContainer';
 
 class CardComponent extends Component {
 
     state = {
         likeActive: false,
-        saved: false,
     }
 
     render() {
-        const { height, width } = Dimensions.get('window');
-        // const { profileImage, name } = this.props.user;
-        // const sliderWidth = width;
-        // const itemWidth = width - 60;
-
         return (
             <Card {...this.props} _renderItem={this._renderItem} getImages={this.getImages} onLikePress={this.onLikePress} likeActive={this.state.likeActive}/>
         );
@@ -43,14 +32,13 @@ class CardComponent extends Component {
                 </View>
             );
         }
-
     }
     getImages = () => {
         let places = [];
         places.images = [];
         let selectedPosts = this.props.postDetails;
 
-        places.images.push(() => <TestMap />)
+        places.images.push(() => <TestMap {...this.props} places={this.props.user.tours[0].places} coordinates={()=>this.mapLocationsToArray()} />)
         selectedPosts.images.forEach((img) => { places.images.push(img) });
 
         return places.images;
@@ -61,6 +49,17 @@ class CardComponent extends Component {
             likeActive: !this.state.likeActive,
         });
         this.state.likeActive ? this.props.dislikePost() : this.props.likePost();
+        this.mapLocationsToArray();
+    }
+
+    mapLocationsToArray = () => {
+        const locationsArray = this.props.user.tours[0].places.map((place)=> {
+            return {
+                latitude: place.location.lat,
+                longitude: place.location.lng,
+            }
+        });
+        return locationsArray;
     }
 }
 
