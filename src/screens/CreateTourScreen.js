@@ -292,7 +292,7 @@ export default class CreateArticleScreen extends Component {
                                 </Button>
                                 <Button
                                     title={'Save'}
-                                    onPress={this.addPOI}>
+                                    onPress={() => {this.addPOI(); this.setState({showPOIForm: false})} }>
                                 </Button>
                             </View>
                         </Form>
@@ -342,8 +342,8 @@ export default class CreateArticleScreen extends Component {
                 firebase.database().ref('users/users/' + this.state.userID)
                     .update({tours: tours})
                     .then(res => {
-                        this.setState({showPOIForm: false});
-                        console.log(res)
+                        this.setState({ modalVisibility: false, showPOIForm: false});
+                        // console.log(res)
                     })
                     .catch(err => console.log(err));
             })
@@ -437,7 +437,7 @@ export default class CreateArticleScreen extends Component {
                             </Button>
                             <Button
                                 title={'Add'}
-                                onPress={() => {this.setState({modalVisibility: false, displayPOIForm: true})}}>
+                                onPress={() => this.setState({modalVisibility: false, displayPOIForm: true})}>
                             </Button>
                         </View>
 
