@@ -37,7 +37,8 @@ export default class TestMap extends Component {
             <View style={{ flex: 1 }}>
                 <MapView
                     style={{ flex: 1 }}
-                    fitToCoordinates={true}
+                    ref={(ref) => { this.mapRef = ref; }}
+                    onLayout={() => this.mapRef.fitToCoordinates(this.props.coordinates, { edgePadding: { top: 50, right: 10, bottom: 10, left: 10 }, animated: true })} 
                     initialRegion={{
                         latitude: 50.0646501,
                         longitude: 19.9449799,
