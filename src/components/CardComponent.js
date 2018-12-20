@@ -14,7 +14,13 @@ class CardComponent extends Component {
 
     state = {
         likeActive: false,
+        coordinates: [],
     }
+
+    // componentDidMount(){
+    //     this.mapLocationsToArray();
+    //     console.log('componentDidMount',this.state.coordinates)
+    // }
 
     render() {
         return (
@@ -37,8 +43,9 @@ class CardComponent extends Component {
         let places = [];
         places.images = [];
         let selectedPosts = this.props.postDetails;
+        const coordinates = this.mapLocationsToArray();
 
-        places.images.push(() => <TestMap {...this.props} places={this.props.user.tours[0].places} coordinates={()=>this.mapLocationsToArray()} />)
+        places.images.push(() => <TestMap {...this.props} places={this.props.user.tours[0].places} coordinates={coordinates} />)
         selectedPosts.images.forEach((img) => { places.images.push(img) });
 
         return places.images;
@@ -49,17 +56,19 @@ class CardComponent extends Component {
             likeActive: !this.state.likeActive,
         });
         this.state.likeActive ? this.props.dislikePost() : this.props.likePost();
-        this.mapLocationsToArray();
+        // this.mapLocationsToArray();
     }
 
     mapLocationsToArray = () => {
-        const locationsArray = this.props.user.tours[0].places.map((place)=> {
+        const coordinates = this.props.user.tours[0].places.map((place)=> {
             return {
                 latitude: place.location.lat,
                 longitude: place.location.lng,
             }
         });
-        return locationsArray;
+        return coordinates;
+        console.log('coordinates', coordinates);
+        // this.setState({coordinates});
     }
 }
 

@@ -29,7 +29,7 @@ export default class NewsFeedScreen extends Component {
                     <Title>TEST</Title>
                 </Header>
 
-                    <TestMap/>
+                    {/* <TestMap/> */}
 
                 <Footer style={{height: 100}}>
                     <FooterTab>
