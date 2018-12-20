@@ -12,7 +12,7 @@ var firebaseConfig = {
     storageBucket: "tripster-5fc5d.appspot.com",
     messagingSenderId: "798900647773"
 };
-
+import Spinner from '../components/Spinner';
 import {
     TextInput,
     FlatList,
@@ -58,47 +58,41 @@ export default class ExploreScreen extends Component {
 
     state = {
         elements: [], //contains elements to display
-        text:'', //text typed in search bar
+        text: '', //text typed in search bar
         tours: false, //whether or not tours are displayed
         users: false, //whether or not users are displayed
+        loading: false,
     }
 
     componentDidMount() {
-        console.log("mounted");
-
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
-        firebase.database().ref('/users/users/').once('value').then(resp => console.log(resp.val()));
+        // firebase.database().ref('/users/users/').once('value').then(resp => console.log(resp.val()));
     }
 
     searchForUsers = () => {
-        this.setState({elements: []});
-        console.log(this.state.text);
+        this.setState({ elements: [], loading:true });
         //get users from database and set 'elements' accordingly
-        firebase.database().ref('/users/users/').orderByChild('name').equalTo(this.state.text).once('value')
+        firebase.database().ref('/users/users/').orderByChild('name').once('value')//.equalTo(this.state.text).once('value')
             .then(resp => {//this makes it so users are set to be displayed and not tours
-                this.setState({elements: Object.values(resp.val()),tours: false,users: true});
-                console.log(this.state.elements);
-                console.log(this.state.users);
+                console.log('>>>>>resp', resp.val());
+                this.setState({ elements: Object.values(resp.val()), tours: false, users: true, loading: false });
             });
-
-
-
     }
 
     searchForTours = () => {
         //get tours from database and set 'elements' accordingly
-        this.setState({tours: true,users: false}); // this makes it so tours are set to be displayed and not users
+        this.setState({ tours: true, users: false }); // this makes it so tours are set to be displayed and not users
     }
 
     dispSearchForm = () => {
-        return(<TextInput
-                style={{height: 40,  width: width*0.8, left: width*0.1, borderColor: 'gray', borderWidth: 1}}
-                placeholder = ' Type here to search for users or tours '
-                onChangeText={(text) => this.setState({text})}
-                value={this.state.text}
-            />
+        return (<TextInput
+            style={{ height: 40, width: width * 0.8, left: width * 0.1, borderColor: 'gray', borderWidth: 1 }}
+            placeholder=' Type here to search for users or tours '
+            onChangeText={(text) => this.setState({ text })}
+            value={this.state.text}
+        />
         );
     }
 
@@ -109,7 +103,7 @@ export default class ExploreScreen extends Component {
             <View style={{
                 //zIndex: 1,
                 width: width,
-                top:45,
+                top: 45,
                 position: 'absolute',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
@@ -131,10 +125,10 @@ export default class ExploreScreen extends Component {
     }
 
     dispUserList = () => {
-        if(this.state.elements==[] || this.state.elements == null){
-            console.log("sth wrong");
-            return(
-                <Text style = {{
+        if (this.state.elements == [] || this.state.elements == null) {
+            // console.log("sth wrong");
+            return (
+                <Text style={{
                     top: 45
                 }}
                 >
@@ -143,7 +137,7 @@ export default class ExploreScreen extends Component {
             );
         }
         else {
-            console.log("list");
+            // console.log("list");
             return (
                 <View style={{
                     zIndex: 2,
@@ -156,14 +150,14 @@ export default class ExploreScreen extends Component {
                             <List>
                                 <FlatList
                                     data={this.state.elements}
-                                    renderItem={({item}) => (
+                                    renderItem={({ item }) => (
                                         <ListItem avatar>
                                             <Left>
                                                 <Thumbnail source={{ uri: item.profileImage }} />
                                             </Left>
                                             <Body>
-                                            <Text>{item.name}</Text>
-                                            <Text note>{item.region}</Text>
+                                                <Text>{item.name}</Text>
+                                                <Text note>{item.region}</Text>
                                             </Body>
                                             <Right>
                                                 <Icon name="arrow-forward" />
@@ -175,63 +169,18 @@ export default class ExploreScreen extends Component {
                         </Content>
                     </Container>
                 </View>
-            );}
-
+            );
+        }
     }
 
-    /*
-
-
-
-
-
-     title={`${item.name}`}
-                                        avatar={{ uri: item.profileImage }}
-                                        subtitle={`${item.region}`}
-                                    /
-
-    keyExtractor={(item, index) => index.toString()}
-
-                                        <Left>
-                                          <Thumbnail square source={{uri: item.result.profileImage}}/>
-                                        </Left>
-                                        <Body>
-                                        <Text>{item.result.name}</Text>
-                                        </Body>
-                                    </ListItem>
-    */
-
     render() {
-        return(<View>
-                {this.dispSearchForm()}
-                {this.dispSearchButtons()}
-                {this.state.users ? this.dispUserList() : null }
-            </View>
+        return (<View>
+            {this.dispSearchForm()}
+            {this.dispSearchButtons()}
+            {this.state.users ? this.dispUserList() : this.state.loading && <Spinner/>}
+        </View>
         );
-        /*
-        return (
-            <ScrollView >
-                <View style={styles.container}>
-                    <StatusBar
-                        barStyle="light-content"
-                        backgroundColor="#1c5160"
-                    />
-                    <Text style={styles.welcome}>
-                        Explore is commin
-                    </Text>
-                    <Text style={styles.instructions}>
-                        Explore is commin
-                    </Text>
-                    <Text style={styles.instructions}>
-                        {instructions}
-                    </Text>
-                </View>
-                <Text>
-                {this.dispSearchForm()}
-                </Text>
-            </ScrollView>
-        );
-        */
+
     }
 }
 
