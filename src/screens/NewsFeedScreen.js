@@ -24,21 +24,23 @@ export default class NewsFeedScreen extends Component {
 
     render() {
         return (
-            <Container>
-                <Header style={{height: 100}}>
-                    <Title>TEST</Title>
-                </Header>
-
-                    {/* <TestMap/> */}
-
-                <Footer style={{height: 100}}>
-                    <FooterTab>
-                        <Button transparent>
-                            <Icon name='ios-call' />
-                        </Button>
-                    </FooterTab>
-                </Footer>
-            </Container>
+            <ScrollView >
+            <View style={styles.container}>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor="#4F6D7A"
+                />
+                <Text style={styles.welcome}>
+                    News Feed are commin
+                </Text>
+                <Text style={styles.instructions}>
+                    News Feed are commin
+                </Text>
+                <Text style={styles.instructions}>
+                    {instructions}
+                </Text>
+            </View>
+        </ScrollView>
         );
     }
 }

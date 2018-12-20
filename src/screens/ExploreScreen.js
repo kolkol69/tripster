@@ -74,9 +74,9 @@ export default class ExploreScreen extends Component {
     searchForUsers = () => {
         this.setState({ elements: [], loading:true });
         //get users from database and set 'elements' accordingly
-        firebase.database().ref('/users/users/').orderByChild('name').once('value')//.equalTo(this.state.text).once('value')
+        firebase.database().ref('/users/users/').orderByChild('name').equalTo(this.state.text).once('value')
             .then(resp => {//this makes it so users are set to be displayed and not tours
-                console.log('>>>>>resp', resp.val());
+                // console.log('>>>>>resp', resp.val());
                 this.setState({ elements: Object.values(resp.val()), tours: false, users: true, loading: false });
             });
     }
