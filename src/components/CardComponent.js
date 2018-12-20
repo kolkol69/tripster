@@ -12,7 +12,8 @@ import { likePost, dislikePost } from '../actions/likeAction';
 
 import TestMap from './Profile/TestMap';
 
-import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'native-base'
+// import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'native-base'
+import Card from './CardContainer';
 
 class CardComponent extends Component {
 
@@ -23,53 +24,12 @@ class CardComponent extends Component {
 
     render() {
         const { height, width } = Dimensions.get('window');
-        const { profileImage, name } = this.props.user;
-        const sliderWidth = width;
-        const itemWidth = width - 60;
+        // const { profileImage, name } = this.props.user;
+        // const sliderWidth = width;
+        // const itemWidth = width - 60;
 
         return (
-            <Card>
-                <CardItem>
-                    <Left>
-                        <Thumbnail source={{ uri: `${profileImage}` }} />
-                        <Body>
-                            <Text>{this.props.user.name}</Text>
-                            <Text note>{this.props.user.tours[0].startDate}</Text>
-                        </Body>
-                    </Left>
-                </CardItem>
-                <CardItem cardBody>
-                    <Carousel
-                        ref={(c) => { this._carousel = c; }}
-                        data={this.getImages(this.props)}
-                        renderItem={this._renderItem}
-                        sliderWidth={sliderWidth}
-                        itemWidth={itemWidth}
-                    />
-                </CardItem>
-                <CardItem style={{ height: 45 }}>
-                    <Left>
-                        <Text style={{ marginRight: 5 }}>{this.props.likes}</Text>
-                        <Button onPress={() => { this.onLikePress() }} transparent>
-                            <Icon name="ios-heart" style={this.state.likeActive ? { color: 'red' } : { color: 'black' }} />
-                        </Button>
-                        <Button transparent>
-                            <Icon name="ios-chatbubbles" style={{ color: 'black' }} />
-                        </Button>
-                        <Button transparent>
-                            <Icon name="ios-send" style={{ color: 'black' }} />
-                        </Button>
-                    </Left>
-                </CardItem>
-                <CardItem>
-                    <Body>
-                        <Text>
-                            <Text style={{ fontWeight: "900", marginRight: 5 }}>{name}</Text>
-                            <Text> {this.props.postDetails.images[0].description} </Text>
-                        </Text>
-                    </Body>
-                </CardItem>
-            </Card>
+            <Card {...this.props} _renderItem={this._renderItem} getImages={this.getImages} onLikePress={this.onLikePress} likeActive={this.state.likeActive}/>
         );
     }
     _renderItem = ({ item, index }) => {
@@ -99,7 +59,6 @@ class CardComponent extends Component {
     onLikePress = () => {
         this.setState({
             likeActive: !this.state.likeActive,
-            // likes: this.state.likeActive ? this.props.likes - 1 : this.props.likes + 1,
         });
         this.state.likeActive ? this.props.dislikePost() : this.props.likePost();
     }
@@ -118,7 +77,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardComponent);
-// export default CardComponent;
 
 const styles = StyleSheet.create({
     container: {
