@@ -7,7 +7,7 @@ import {
 export function fetchUsers(userId) {
     return dispatch => {
       dispatch(fetchUsersBegin());
-      return fetch(`http://556c7787.ngrok.io/user/${userId}`)
+      return fetch(`http://6783b505.ngrok.io/user/${userId}`)
         .then(handleErrors)
         .then(res => res.json())
         .then(json => {
