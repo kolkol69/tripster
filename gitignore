@@ -7,5 +7,4 @@ npm-debug.*
 *.mobileprovision
 api_key.js
 poi_template.js
-public/app/firebase_res.json
 firebase_res.json
