@@ -1,5 +1,4 @@
-# **Tripster** :house_with_garden:
-
+# **Tripster**  :round_pushpin: :airplane:
 ## Description
 
 Tripster is an amazing mobile software for travelers, available on both android and iOS. The main idea of this application is to ease the workflow of recording and sharing your trips with your friends or with people you are only about to meet and for travelers who want to find places which are never mentioned in the city guides. Using the application you can create new “trip”, - a stack of interesting places during your journey gathered together, share your experience along with your route, share your comments and photos so anyone who finds your “trip” (if you share it) can experience everything by themselves. If you are new to app and you dont have someone to follow yet you can simply find the complete “trip” in the city you’ve never been to so you wouldn’t be lost while discovering new interesting places or sightseeing without paying someone to show you the way!
@@ -26,3 +25,15 @@ At the top, you can see some basic user information:
     2. User trips represented as a single trips with full description(described above), scrolling down you are navigating to the next trip.
     3. Here you can see trips you liked and desided to save.
     4. This tab shows trips which were made with the people you know. Trips there appears only when some one tag you on their trips
+
+# How to run
+1. Clone this repo and run `npm i` in the _tripster_ directory
+2. Donwload ngrok, after downloading run it with _http 8873_ parameteres (example: `./ngrok http 8873`)
+3. You will be shown your tunnel address (Forwarding                    _http://TUNNEL_ADDRESS.ngrok.io -> localhost:8873_), now you need to copy **TUNNEL_ADDRESS** and change it in **./src/tunnel_address.js**
+4. Download Expo on your mobile device
+5. Run expo in _tripster_ directory `expo start --tunnel`. `--tunnel` param enables vpn so you dont need to be in the same network to connect your device with your local machine. Known isues: if your tunnel is falling back to often and your are not able to create tounel connection try logginig in expo account using console. Search to find out how to do it.
+6. Run server with `node ./api/sercer.js` in _tripster_ directory.
+7. Scan the provided QR with your mobile device.
+    - iOS: Just open camera and point it on QR, wait untill shown notification asking if you want to open the Expo application. 
+    - Android: Scann QR with scann button in Expo application.
+8. Wait for Expo building and downloading __Tripster__ app.
