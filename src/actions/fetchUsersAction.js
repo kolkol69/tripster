@@ -1,3 +1,4 @@
+import {TUNNEL_ADDRESS} from '../tunnel_address';
 import {
   FETCH_USERS_BEGIN,
   FETCH_USERS_SUCCESS,
@@ -7,7 +8,7 @@ import {
 export function fetchUsers(userId) {
     return dispatch => {
       dispatch(fetchUsersBegin());
-      return fetch(`http://da74a57d.ngrok.io/user/${userId}`)
+      return fetch(`http://${TUNNEL_ADDRESS}.ngrok.io/user/${userId}`)
         .then(handleErrors)
         .then(res => res.json())
         .then(json => {
