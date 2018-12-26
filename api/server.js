@@ -6,7 +6,7 @@ const fakeUsers = require('./routes/fakeUsers');
 const getPlaces = require('./routes/getPlaces');
 const startTour = require('./routes/startTour');
 const addPOI = require('./routes/addPOI');
-const getUserData = require('./routes/getUserData');
+const getUserData = require('./routes/getUserData.1');
 
 const port = 8873;
 const app = express();

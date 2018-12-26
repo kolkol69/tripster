@@ -1,17 +1,16 @@
 const express = require('express');
-const firebase_api = require('../firebase_apikey.bart');
+const firebase_api = require('../firebase_apikey.1');
 const firebase = require("firebase");
 
 const router = express.Router();
-// Initialize Firebase
 var config = {
     apiKey: firebase_api.key,
-    authDomain: "tripster-5fc5d.firebaseapp.com",
-    databaseURL: "https://tripster-5fc5d.firebaseio.com",
-    projectId: "tripster-5fc5d",
-    storageBucket: "tripster-5fc5d.appspot.com",
-    messagingSenderId: "798900647773"
-};
+    authDomain: "tripster2-0.firebaseapp.com",
+    databaseURL: "https://tripster2-0.firebaseio.com",
+    projectId: "tripster2-0",
+    storageBucket: "tripster2-0.appspot.com",
+    messagingSenderId: "1058324113756"
+  };
 firebase.initializeApp(config);
 
 var database = firebase.database();
@@ -22,6 +21,7 @@ function getUserData(res, userId = 0) {
     usersRef.once('value',  (snapshot) => {
         snapshot.forEach( (childSnapshot) => {
             var childData = childSnapshot.val();
+            console.log('>>>> childData:', ...childData)
             res.send(childData[userId]);
         });
     });

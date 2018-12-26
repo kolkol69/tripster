@@ -6,3 +6,5 @@ npm-debug.*
 *.key
 *.mobileprovision
 api_key.js
+api/firebase_apikey.1.js
+api/firebase_apikey.bart.js

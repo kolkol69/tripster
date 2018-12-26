@@ -8,3 +8,4 @@ npm-debug.*
 api_key.js
 poi_template.js
 firebase_res.json
+json_user_architecture.json
