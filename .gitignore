@@ -8,3 +8,7 @@ npm-debug.*
 api_key.js
 api/firebase_apikey.1.js
 api/firebase_apikey.bart.js
+*.template.json
+*.apikey.js
+*.1.js
+*.0.js

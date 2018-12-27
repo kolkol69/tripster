@@ -53,7 +53,7 @@ class CardContainer extends Component {
                     <Body>
                         <Text>
                             <Text style={{ fontWeight: "900", marginRight: 5 }}>{name}</Text>
-                            <Text> {this.props.postDetails.images[0].description} </Text>
+                            <Text> {this.props.postDetails.tourDescription} </Text>
                         </Text>
                     </Body>
                 </CardItem>

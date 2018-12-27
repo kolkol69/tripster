@@ -16,7 +16,7 @@ const findSavedPost = (props) => {
 }
 
 const findSelectedPost = (props, id) => {
-    return props.posts.places.filter(place => place.id === id)[0];
+    return props.posts.filter(post => post.id === id)[0];
 }
 
 SavedPosts.propTypes = {

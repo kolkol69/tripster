@@ -3,30 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { MapView } from 'expo';
 import MapViewDirections from 'react-native-maps-directions';
 
-import { GOOGLE_MAPS_APIKEY } from '../../../api_key';
-// const coordinates = [
-//     {
-//         latitude: 50.0646501,
-//         longitude: 19.9449799,
-//     },
-//     {
-//         latitude: 50.1646501,
-//         longitude: 19.8449799,
-//     }
-// ];
-
-// const waypoints = [
-//     {
-//         latitude: 50.0646601,
-//         longitude: 19.9449599,
-//     },
-//     {
-//         latitude: 50.1246501,
-//         longitude: 19.7449799,
-//     }
-
-// ]
-
+import { GOOGLE_MAPS_APIKEY } from '../../../google.apikey';
 
 export default class TestMap extends Component {
     render() {

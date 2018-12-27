@@ -17,11 +17,6 @@ class CardComponent extends Component {
         coordinates: [],
     }
 
-    // componentDidMount(){
-    //     this.mapLocationsToArray();
-    //     console.log('componentDidMount',this.state.coordinates)
-    // }
-
     render() {
         return (
             <Card {...this.props} _renderItem={this._renderItem} getImages={this.getImages} onLikePress={this.onLikePress} likeActive={this.state.likeActive}/>
@@ -45,8 +40,9 @@ class CardComponent extends Component {
         let selectedPosts = this.props.postDetails;
         const coordinates = this.mapLocationsToArray();
 
-        places.images.push(() => <TestMap {...this.props} places={this.props.user.tours[0].places} coordinates={coordinates} />)
-        selectedPosts.images.forEach((img) => { places.images.push(img) });
+        places.images.push(() => <TestMap {...this.props} places={selectedPosts.places} coordinates={coordinates} />)
+        // console.log('>>>>selectedPosts.places', selectedPosts.places);
+        selectedPosts.places.forEach((place) => { places.images.push(place.image) });
 
         return places.images;
     }
@@ -56,19 +52,16 @@ class CardComponent extends Component {
             likeActive: !this.state.likeActive,
         });
         this.state.likeActive ? this.props.dislikePost() : this.props.likePost();
-        // this.mapLocationsToArray();
     }
 
     mapLocationsToArray = () => {
-        const coordinates = this.props.user.tours[0].places.map((place)=> {
+        const coordinates = this.props.postDetails.places.map((place)=> {
             return {
                 latitude: place.location.lat,
                 longitude: place.location.lng,
             }
         });
         return coordinates;
-        console.log('coordinates', coordinates);
-        // this.setState({coordinates});
     }
 }
 

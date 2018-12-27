@@ -12,7 +12,7 @@ function PostCards(props) {
 
 const showCards = (props) => {
     return (
-        props.posts.places.map( place => <CardComponent key={place.id} {...props} postDetails={place} />)
+        props.posts.map( post => <CardComponent key={post.id} {...props} postDetails={post} />)
     )
 }
 

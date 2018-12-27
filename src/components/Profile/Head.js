@@ -8,13 +8,13 @@ import ProfilePhoto from './Photo';
 
 const Head = (props) => {
     const {followers, following, profileImage, profileDescription, name} = props.user;
-    const postsAmount = props.user.tours[0].places.length;
+    const postsAmount = props.user.tours.length;
     return (
         <View style={styles.head}>
             <View style={styles.info}>
                 <ProfilePhoto profilePhoto={profileImage} />
                 <View style={styles.stats}>
-                    <ProfileStats followers={followers} following={following} posts={postsAmount}/>
+                    <ProfileStats followers={followers.length} following={following.length} posts={postsAmount}/>
                     <ProfileButtons />
                 </View>
             </View>
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
 
 Head.propTypes = {
     user: PropTypes.shape({
-        followers:PropTypes.number.isRequired,
-        following:PropTypes.number.isRequired,
+        followers:PropTypes.array.isRequired,
+        following:PropTypes.array.isRequired,
         name: PropTypes.string.isRequired,
         tours: PropTypes.array.isRequired,
         profileImage: PropTypes.string.isRequired,

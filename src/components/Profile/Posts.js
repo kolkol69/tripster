@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Post from './Post';
 import SelectedPost from './SelectedPost';
-import {connect} from 'react-redux';
 
 class Posts extends Component {
     state = {
@@ -28,25 +27,13 @@ class Posts extends Component {
         this.setState({ selectedPostId });
     }
     renderPosts = () => {
-        return this.props.posts.places.map((place, index) =>
-            <TouchableOpacity key={place.id} onPress={() => { this.onPressPost(place.id) }}>
-                <Post id={place.id} index={index} image={place.images[0].url} />
+        return this.props.posts.map((post, index) =>
+            <TouchableOpacity key={post.id} onPress={() => { this.onPressPost(post.id) }}>
+                <Post id={post.id} index={index} image={post.places[0].image.url} />
             </TouchableOpacity>
         )
     }
 }
-
-// function mapDispatchToProps () {
-//     return {
-
-//     }
-// }
-
-// function mapStateToProps(){
-//     return {
-        
-//     }
-// }
 
 Posts.propTypes = {
 
@@ -60,4 +47,3 @@ const styles = StyleSheet.create({
 });
 
 export default Posts;
-// export default connect(mapDispatchToProps, mapStateToProps)(Posts);

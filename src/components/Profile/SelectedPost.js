@@ -9,7 +9,7 @@ const SelectedPost = (props) => {
 }
 
 const findSelectedPost = (props) => {
-    return props.posts.places.filter(place => place.id === props.postID)[0];
+    return props.posts.filter(post => post.id === props.postID)[0];
 }
 SelectedPost.propTypes = {
 
