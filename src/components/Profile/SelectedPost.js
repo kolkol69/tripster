@@ -4,7 +4,7 @@ import CardComponent from '../CardComponent';
 
 const SelectedPost = (props) => {
     return (
-        <CardComponent {...props} postDetails={findSelectedPost(props)}/>
+        <CardComponent {...props} postDetails={findSelectedPost(props)} autoplay={true}/>
     )
 }
 

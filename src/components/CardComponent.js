@@ -19,7 +19,7 @@ class CardComponent extends Component {
 
     render() {
         return (
-            <Card {...this.props} _renderItem={this._renderItem} getImages={this.getImages} onLikePress={this.onLikePress} likeActive={this.state.likeActive}/>
+            <Card {...this.props} _renderItem={this._renderItem} getImages={this.getImages} onLikePress={this.onLikePress} likeActive={this.state.likeActive} autoplay={this.props.autoplay}/>
         );
     }
     _renderItem = ({ item, index }) => {
@@ -41,7 +41,6 @@ class CardComponent extends Component {
         const coordinates = this.mapLocationsToArray();
 
         places.images.push(() => <TestMap {...this.props} places={selectedPosts.places} coordinates={coordinates} />)
-        // console.log('>>>>selectedPosts.places', selectedPosts.places);
         selectedPosts.places.forEach((place) => { places.images.push(place.image) });
 
         return places.images;
@@ -75,6 +74,10 @@ function mapStateToProps(state) {
     return {
         likes: state.likes.likes,
     }
+}
+
+CardComponent.defaultProps = {
+    autoplay: false,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardComponent);

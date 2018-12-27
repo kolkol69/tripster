@@ -9,6 +9,10 @@ import { Card, CardItem, Thumbnail, Body, Left, Right, Button, Icon } from 'nati
 
 class CardContainer extends Component {
 
+    state = {
+        currentIndex: 0,
+    }   
+
     render() {
         const { height, width } = Dimensions.get('window');
         const { profileImage, name } = this.props.user;
@@ -22,17 +26,20 @@ class CardContainer extends Component {
                         <Thumbnail source={{ uri: `${profileImage}` }} />
                         <Body>
                             <Text>{this.props.user.name}</Text>
-                            <Text note>{this.props.user.tours[0].startDate}</Text>
+                            <Text note>{this.props.postDetails.startDate}</Text>
                         </Body>
                     </Left>
                 </CardItem>
                 <CardItem cardBody>
                     <Carousel
-                        ref={(c) => { this._carousel = c; }}
+                        ref={(c) => { this._carousel = c;}}
                         data={this.props.getImages()}
                         renderItem={this.props._renderItem}
                         sliderWidth={sliderWidth}
                         itemWidth={itemWidth}
+                        autoplay={this.props.autoplay}
+                        autoplayDelay={1000}
+                        onSnapToItem={this.printCurrentPlaceIndex}
                     />
                 </CardItem>
                 <CardItem style={{ height: 45 }}>
@@ -53,15 +60,26 @@ class CardContainer extends Component {
                     <Body>
                         <Text>
                             <Text style={{ fontWeight: "900", marginRight: 5 }}>{name}</Text>
-                            <Text> {this.props.postDetails.tourDescription} </Text>
+                            <Text> {this.showDescription()} </Text>
                         </Text>
                     </Body>
                 </CardItem>
             </Card>
         );
     }
+    showDescription = () => {
+        if( this.state.currentIndex === 0 ){
+            return this.props.postDetails.tourDescription
+        }else{
+            return this.props.postDetails.places[this.state.currentIndex-1].description;
+        }
+    }
 
-
+    printCurrentPlaceIndex = (index) => {
+        this.setState({
+            currentIndex:index,
+        });
+    }
 }
 
 CardContainer.propTypes = {
