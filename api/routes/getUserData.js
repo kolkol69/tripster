@@ -1,5 +1,5 @@
 const express = require('express');
-const firebase_api = require('../firebase.apikey');
+const firebase_api = require('../../firebase.apikey');
 const firebase = require("firebase");
 
 const router = express.Router();

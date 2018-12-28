@@ -29,7 +29,7 @@ At the top, you can see some basic user information:
 # How to run
 1. Clone this repo and run `npm i` in the _tripster_ directory
 2. Download ngrok, after downloading run it with _http 8873_ parameteres (example: `./ngrok http 8873`).
-3. You will be shown your tunnel address (Forwarding                    _http://TUNNEL_ADDRESS.ngrok.io -> localhost:8873_), now you need to copy **TUNNEL_ADDRESS** and change it in **./src/tunnel_address.js**.
+3. You will be shown your tunnel address (Forwarding                    _http://TUNNEL_ADDRESS.ngrok.io -> localhost:8873_), now you need to copy **TUNNEL_ADDRESS** and change it in **./tunnel_address.js**.
 4. Download Expo on your mobile device.
 5. Run expo in _tripster_ directory `expo start --tunnel`. `--tunnel` param enables vpn so you dont need to be in the same network to connect your device with your local machine. Known isues: if your tunnel is falling back to often and your are not able to create tounel connection try logginig in expo account using console. Search to find out how to do it.
 6. Run server with `node ./api/sercer.js` in _tripster_ directory.
