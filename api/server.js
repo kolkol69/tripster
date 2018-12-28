@@ -34,9 +34,6 @@ app.use('/startTour', startTour);
 app.use('/addPOI/', addPOI);
 app.use('/user', getUserData);
 
-
-
-
 app.listen(port, (err) => {
   if (err) {
     console.log(err);
