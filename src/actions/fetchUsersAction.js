@@ -1,4 +1,4 @@
-import {TUNNEL_ADDRESS} from '../tunnel_address';
+import {TUNNEL_ADDRESS} from '../../tunnel_address';
 import {
   FETCH_USERS_BEGIN,
   FETCH_USERS_SUCCESS,
