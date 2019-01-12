@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Carousel from './Carousel';
+import Comments from './Comments';
 import {
     Text,
     Dimensions
@@ -39,7 +40,7 @@ class CardContainer extends Component {
                         itemWidth={itemWidth}
                         autoplay={this.props.autoplay}
                         autoplayDelay={1000}
-                        onSnapToItem={this.printCurrentPlaceIndex}
+                        onSnapToItem={this.setCurrentPlaceIndex}
                     />
                 </CardItem>
                 <CardItem style={{ height: 45 }}>
@@ -64,6 +65,9 @@ class CardContainer extends Component {
                         </Text>
                     </Body>
                 </CardItem>
+                <CardItem>
+                   <Comments {...this.props}/>
+                </CardItem>
             </Card>
         );
     }
@@ -75,7 +79,7 @@ class CardContainer extends Component {
         }
     }
 
-    printCurrentPlaceIndex = (index) => {
+    setCurrentPlaceIndex = (index) => {
         this.setState({
             currentIndex:index,
         });
