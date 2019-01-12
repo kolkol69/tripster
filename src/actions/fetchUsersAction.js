@@ -14,6 +14,8 @@ export function fetchUsers(userId) {
         .then(json => {
           // console.log('>>>>RESPONSE:', Object.keys(json));
           dispatch(fetchUsersSuccess(json));
+          // dispatch(populateLikes(json));
+          // dispatch(populateComments(json));
           return json;
         })
         .catch(error => dispatch(fetchUsersFailure(error)));
@@ -41,3 +43,4 @@ export const fetchUsersFailure = error => ({
   type: FETCH_USERS_FAILURE,
   payload: { error }
 });
+
