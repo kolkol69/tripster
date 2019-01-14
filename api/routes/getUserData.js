@@ -13,23 +13,10 @@ var config = {
 };
 firebase.initializeApp(config);
 
-var database = firebase.database();
-
-// function getUserData(res, userId = 22222) {
-//     var usersRef = database.ref('users');
-//     usersRef.once('value', (snapshot) => {
-//         snapshot.forEach((childSnapshot) => {
-//             var childData = childSnapshot.val();
-//             res.send(childData[userId]);
-//         });
-//     }, (err) => {
-//         console.log(err);
-//         res.send('error: check server console!')
-//     });
-// }
+const database = firebase.database();
 
 function getUserData(res, userId = 11111) {
-    const dbref = firebase.database().ref('/users/users/');
+    const dbref = database.ref('/users/users/');
     dbref.orderByChild('id').equalTo(userId).once('value')
         .then(snap => {
             res.send(snap.val()[0]);
@@ -38,7 +25,7 @@ function getUserData(res, userId = 11111) {
         });
 }
 function getUserPostData(res, userId = 11111, postId = 1710) {
-    const dbref = firebase.database().ref('/users/users/')
+    const dbref = database.ref('/users/users/')
     dbref.orderByChild('id').equalTo(userId).once('value')
         .then(snap => {
             const data = snap.val()[0];
@@ -51,6 +38,14 @@ function getUserPostData(res, userId = 11111, postId = 1710) {
 router.get('/', (req, res) => {
     getUserData(res);
 });
+
+
+
+// router.get('/test', (req, res) => {
+//     const dbref = database.ref('/users/users/0/tours/0');
+//     dbref.update({id: 1117});
+//     res.send(dbref);
+// });
 
 router.get('/:id', (req, res) => {
     getUserData(res, +req.params.id);
