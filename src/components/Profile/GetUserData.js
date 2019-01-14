@@ -22,7 +22,7 @@ export class GetUserData extends Component {
             )
         } else {
             return (
-                <Spinner />
+                <Spinner size={'large'} color={'#BDBAB9'}/>
             )
         }
     }
