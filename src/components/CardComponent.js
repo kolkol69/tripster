@@ -5,7 +5,7 @@ import {
     Image,
 } from "react-native";
 import { connect } from 'react-redux';
-import { likePost, dislikePost } from '../actions/likeAction';
+import { fetchLike } from '../actions/toggleLikeAction';
 
 import TestMap from './Profile/TestMap';
 import Card from './CardContainer';
@@ -15,18 +15,19 @@ class CardComponent extends Component {
     state = {
         likeActive: false,
         coordinates: [],
+        likesAmount: -1,
     }
 
-    componentWillReceiveProps(){
+    componentDidMount(){
         this.setState({
-            // likes: this.props.postDetails.likes.length,
-            likeActive: this.props.postDetails.likes.indexOf(this.props.user.id) === -1,
+            likeActive: this.props.postDetails.likes.indexOf(this.props.user.id) !== -1,
+            likesAmount: this.props.usersData.tours.filter(tour => tour.id == this.props.postDetails.id)[0].likes.filter(like => like != undefined).length,
         });
     }
 
     render() {
         return (
-            <Card {...this.props} _renderItem={this._renderItem} getImages={this.getImages} onLikePress={this.onLikePress} likeActive={this.state.likeActive} autoplay={this.props.autoplay}/>
+            <Card {...this.props} likesAmount={this.state.likesAmount} likeActive={this.state.likeActive} loadingLikes={this.props.loading} _renderItem={this._renderItem} getImages={this.getImages} onLikePress={this.onLikePress} autoplay={this.props.autoplay}/>
         );
     }
     _renderItem = ({ item, index }) => {
@@ -54,10 +55,12 @@ class CardComponent extends Component {
     }
 
     onLikePress = (postId) => {
+        const addOrRemove = this.state.likeActive ? -1 : 1;
         this.setState({
+            likesAmount: this.state.likesAmount + 1*addOrRemove,
             likeActive: !this.state.likeActive,
         });
-        this.state.likeActive ? this.props.dislikePost(postId) : this.props.likePost(postId);
+        this.props.toggleLike();
     }
 
     mapLocationsToArray = () => {
@@ -73,14 +76,12 @@ class CardComponent extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        likePost: (postId) => dispatch(likePost(postId)),
-        // populateLike: () => dispatch(populateLike()),
-        dislikePost: (postId) => dispatch(dislikePost(postId)),
+        toggleLike: () => dispatch(fetchLike()),
     }
 }
 const mapStateToProps = (state) => {
     return {
-        // ...state
+        loading: state.fetchedLikes.loading,
     }   
 }
 
