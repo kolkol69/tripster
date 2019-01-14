@@ -24,7 +24,7 @@ const Buttons = props => {
                     justifyContent: 'center'
                 }}
                     onPress={() => { props.fetchUsers(props.userData.id);}}>
-                    {props.loading ?  <Spinner size={'small'} color={'#BDBAB9'}/> : <Icon name="refresh" size={25} style={{ color: 'black' }}/>}</Button>
+                    {props.loading ?  <Spinner/> : <Icon name="refresh" size={25} style={{ color: 'black' }}/>}</Button>
             </View>
         </View>
     )
