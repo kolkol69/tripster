@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
     }
 })
 
-Spinner.propTypes = {
-    color: PropTypes.string.isRequired,
-    size: PropTypes.string.isRequired,
+Spinner.defaultProps = {
+    color: '#BDBAB9', 
+    size: 'small', // 'small' or 'large'
 }
 
 export default Spinner
