@@ -1,11 +1,11 @@
 // root reducer
 import {combineReducers} from 'redux';
-import likeReducer from './likeReducer';
 import fetchUsersReducer from './fetchUsersReducer';
+import fetchToggleLikeReducer from './fetchToggleLikePost';
 
 const rootReducer = combineReducers({
-    likes: likeReducer,
     fetchedUsers: fetchUsersReducer,
+    fetchedLikes: fetchToggleLikeReducer,
 });
 
 export default rootReducer;
