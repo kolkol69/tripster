@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 import { Button } from 'native-base';
 import Icon from '@expo/vector-icons/EvilIcons';
 import { View, Text } from "react-native";
+import { connect } from 'react-redux';
+import {fetchUsers} from '../../actions/fetchUsersAction';
+import Spinner from '../Spinner';
 
 /**Edit profile and Settings Buttons **/
 const Buttons = props => {
@@ -20,15 +23,27 @@ const Buttons = props => {
                     marginRight: 10, marginLeft: 5,
                     justifyContent: 'center'
                 }}
-                onPress={()=>{console.log('update');}}>
-                    <Icon name="refresh" size={25} style={{ color: 'black' }}></Icon></Button>
+                    onPress={() => { props.fetchUsers(props.userData.id);}}>
+                    {props.loading ?  <Spinner size={'small'} color={'#BDBAB9'}/> : <Icon name="refresh" size={25} style={{ color: 'black' }}/>}</Button>
             </View>
         </View>
-  )
+    )
 }
 
 Buttons.propTypes = {
 
 }
 
-export default Buttons
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchUsers: (userId) => { dispatch(fetchUsers(userId)) }
+    }
+}
+const mapStateToProps = (state) => {
+    return {
+        userData: state.fetchedUsers.usersData,
+        loading: state.fetchedUsers.loading
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Buttons)
