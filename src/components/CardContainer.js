@@ -26,8 +26,8 @@ class CardContainer extends Component {
                     <Left>
                         <Thumbnail source={{ uri: `${profileImage}` }} />
                         <Body>
-                            <Text>{this.props.user.name}</Text>
-                            <Text note>{this.props.postDetails.startDate}</Text>
+                            <Text>{name}</Text>
+                            <Text style={{color: 'lightgrey'}} note>{this.props.postDetails.startDate}</Text>
                         </Body>
                     </Left>
                 </CardItem>
@@ -45,8 +45,8 @@ class CardContainer extends Component {
                 </CardItem>
                 <CardItem style={{ height: 45 }}>
                     <Left>
-                        <Text style={{ marginRight: 5 }}>{this.props.likes}</Text>
-                        <Button onPress={() => { this.props.onLikePress() }} transparent>
+                        <Text style={{ marginRight: 5 }}>{this.props.postDetails.likes.filter(like => like != undefined).length}</Text>
+                        <Button onPress={() => { this.props.onLikePress(this.props.postDetails.id) }} transparent>
                             <Icon name="ios-heart" style={this.props.likeActive ? { color: 'red' } : { color: 'black' }} />
                         </Button>
                         <Button transparent>

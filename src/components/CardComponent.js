@@ -17,6 +17,13 @@ class CardComponent extends Component {
         coordinates: [],
     }
 
+    componentWillReceiveProps(){
+        this.setState({
+            // likes: this.props.postDetails.likes.length,
+            likeActive: this.props.postDetails.likes.indexOf(this.props.user.id) === -1,
+        });
+    }
+
     render() {
         return (
             <Card {...this.props} _renderItem={this._renderItem} getImages={this.getImages} onLikePress={this.onLikePress} likeActive={this.state.likeActive} autoplay={this.props.autoplay}/>
@@ -46,11 +53,11 @@ class CardComponent extends Component {
         return places.images;
     }
 
-    onLikePress = () => {
+    onLikePress = (postId) => {
         this.setState({
             likeActive: !this.state.likeActive,
         });
-        this.state.likeActive ? this.props.dislikePost() : this.props.likePost();
+        this.state.likeActive ? this.props.dislikePost(postId) : this.props.likePost(postId);
     }
 
     mapLocationsToArray = () => {
@@ -64,16 +71,17 @@ class CardComponent extends Component {
     }
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
-        likePost: () => dispatch(likePost()),
-        dislikePost: () => dispatch(dislikePost()),
+        likePost: (postId) => dispatch(likePost(postId)),
+        // populateLike: () => dispatch(populateLike()),
+        dislikePost: (postId) => dispatch(dislikePost(postId)),
     }
 }
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     return {
-        likes: state.likes.likes,
-    }
+        // ...state
+    }   
 }
 
 CardComponent.defaultProps = {
