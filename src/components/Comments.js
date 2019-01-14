@@ -10,19 +10,19 @@ class Comments extends Component {
             <View style={{ marginTop: -5 }}>
                 <Text style={{ color: 'lightgrey', marginBottom: 10 }}>Comments:</Text>
                 {this.showComments()}
-                {/* {this.commentInput()} */}
+                {this.commentInput()}
             </View>
         )
     }
-    // commentInput = () => {
-    //     return (
-    //         <TextInput
-    //             style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-    //             onChangeText={(comment) => this.setState({ comment })}
-    //             value={this.state.comment}
-    //         />
-    //     );
-    // }
+    commentInput = () => {
+        return (
+            <TextInput
+                style={{ marginTop: 10, height: 25, borderColor: 'lightgray', borderWidth: 1, borderRadius: 15 }}
+                onChangeText={(comment) => this.setState({ comment })}
+                value={this.state.comment}
+            />
+        );
+    }
     showComments = () => {
         return this.props.postDetails.comments.map((comment, index) => {
             return (
