@@ -6,3 +6,4 @@ npm-debug.*
 *.key
 *.mobileprovision
 api_key.js
+*.apikey.js
