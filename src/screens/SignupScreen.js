@@ -19,7 +19,7 @@ export default class SignUp extends React.Component {
         firebase.initializeApp(firebaseConfig);
     }
 }
-zz
+
   handleSignUp = () => {
     firebase
       .auth()
