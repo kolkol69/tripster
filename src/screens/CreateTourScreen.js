@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import {Permissions} from 'expo';
+import { Permissions } from 'expo';
+import { TUNNEL_ADDRESS } from '../../tunnel_address';
 // Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyDJ7VPaMgmjFU0bPDnnDW97lvGSwBGPwYI",
@@ -29,7 +30,7 @@ import {
     Thumbnail,
     Label
 } from 'native-base';
-import {MapView} from 'expo';
+import { MapView } from 'expo';
 import ImagePicker from 'react-native-image-picker';
 
 import {
@@ -49,7 +50,7 @@ import {
     TouchableHighlight,
     Alert
 } from 'react-native';
-
+const serverUrl = `http://${TUNNEL_ADDRESS}.ngrok.io/upload/img`
 const width = Dimensions.get('window').width; //full width
 const height = Dimensions.get('window').height; //full height
 const api = 'AIzaSyD24BWV2Ym7i-OpCENpcM76brS3oIPWtlM';
@@ -72,8 +73,8 @@ export default class CreateArticleScreen extends Component {
         userID: 0, //takie rzeczy powinny byc gdzies w global storze ale narazie niech siedzi tutaj
         currentTourID: 0,
         selectedPOI: {},
-        POIToAddName: '',
-        POIToAddDescription: '',
+        POIToAddName: 'POIName',
+        POIToAddDescription: 'POIDescription',
         POIToAddRating: '',
         POIToAddImages: [],
         POIToAddLocation: {},
@@ -90,7 +91,7 @@ export default class CreateArticleScreen extends Component {
 
     onPressStart = () => {
         let intervalID = setInterval(() => this.checkIfUserStaysLongEnoughInOnePlace(), 6000);
-        this.setState({intervalID, start: true});
+        this.setState({ intervalID, start: true });
 
         navigator.geolocation.watchPosition((currentLocation) => {
             this.setState({
@@ -105,7 +106,7 @@ export default class CreateArticleScreen extends Component {
             .then(resp => {
                 let tours = resp.val();
                 let id = Math.floor(Math.random() * 100000000);
-                this.setState({currentTourID: id});
+                this.setState({ currentTourID: id });
 
                 tours.push({
                     likes: [], //z jakiegos powodu nie mozna pushowac pustych tablic do firebase - pozniej trzeba to sprawdzac
@@ -156,10 +157,10 @@ export default class CreateArticleScreen extends Component {
                 <Button
                     onPress={() => {
                         clearInterval(this.state.intervalID);
-                        this.setState({start: false});
+                        this.setState({ start: false });
                     }}
                     title="Stop"
-                
+
                 />
                 <Button
                     onPress={this.onPressAddPOI}
@@ -173,11 +174,11 @@ export default class CreateArticleScreen extends Component {
         fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.state.userLocation.latitude},${this.state.userLocation.longitude}&radius=50&key=${api}`)
             .then(resp => resp.json())
             .then(respJson => {
-                this.setState({showNearbyPOIList: true});
+                this.setState({ showNearbyPOIList: true });
                 respJson.results.slice(0, 10).forEach(place => {
                     fetch(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${place.place_id}&key=${api}`)
                         .then(placeDetails => placeDetails.json())
-                        .then(placeDetailsJson => this.setState({nearbyPOIList: this.state.nearbyPOIList.concat([placeDetailsJson])}))
+                        .then(placeDetailsJson => this.setState({ nearbyPOIList: this.state.nearbyPOIList.concat([placeDetailsJson]) }))
                         .catch(err => console.log(err))
                 })
             }).catch(err => console.log(err));
@@ -192,18 +193,18 @@ export default class CreateArticleScreen extends Component {
             }}>
                 <Container>
                     <Content>
-                        <View style={{margin: 32}}>
+                        <View style={{ margin: 32 }}>
                             <Button
                                 title={'Close'}
                                 color={'grey'}
-                                onPress={() => this.setState({showNearbyPOIList: false})}>
+                                onPress={() => this.setState({ showNearbyPOIList: false })}>
                             </Button>
                         </View>
-                        <View style={{margin: 32}}>
+                        <View style={{ margin: 32 }}>
                             <Button
                                 title={'Add custom poi'}
                                 onPress={() => {
-                                    this.setState({showNearbyPOIList: false, showPOIForm: true})
+                                    this.setState({ showNearbyPOIList: false, showPOIForm: true })
                                 }}>
                             </Button>
                         </View>
@@ -211,29 +212,29 @@ export default class CreateArticleScreen extends Component {
                             <FlatList
                                 data={this.state.nearbyPOIList}
                                 keyExtractor={(item, index) => index.toString()}
-                                renderItem={({item}) =>
+                                renderItem={({ item }) =>
                                     <ListItem thumbnail>
                                         <Left>
                                             {item.result.photos ?
                                                 <Thumbnail square
-                                                           source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${item.result.photos[0].photo_reference}&key=${api}`}}/>
-                                                : <Thumbnail square source={{uri: item.result.icon}}/>
+                                                    source={{ uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${item.result.photos[0].photo_reference}&key=${api}` }} />
+                                                : <Thumbnail square source={{ uri: item.result.icon }} />
                                             }
                                         </Left>
                                         <Body>
-                                        <Text>{item.result.name}</Text>
-                                        <Text>{item.result.formatted_address}</Text>
+                                            <Text>{item.result.name}</Text>
+                                            <Text>{item.result.formatted_address}</Text>
                                         </Body>
                                         <Right>
                                             <Button title={'Add'}
-                                                    onPress={() => {
-                                                        this.setState({
-                                                            showNearbyPOIList: false,
-                                                            showPOIForm: true,
-                                                            selectedPOI: item.result,
-                                                            POIToAddLocation: item.result.geometry.location
-                                                        });
-                                                    }}>
+                                                onPress={() => {
+                                                    this.setState({
+                                                        showNearbyPOIList: false,
+                                                        showPOIForm: true,
+                                                        selectedPOI: item.result,
+                                                        POIToAddLocation: item.result.geometry.location
+                                                    });
+                                                }}>
                                             </Button>
                                         </Right>
                                     </ListItem>}
@@ -258,29 +259,29 @@ export default class CreateArticleScreen extends Component {
                             <Item stackedLabel>
                                 <Label>Place name</Label>
                                 <Input placeholder={this.state.selectedPOI.name}
-                                       onChangeText={(val) => this.setState({POIToAddName: val})}/>
+                                    onChangeText={(val) => this.setState({ POIToAddName: val })} />
                             </Item>
                             <Item stackedLabel>
                                 <Label>Description</Label>
-                                <Input onChangeText={(val) => this.setState({POIToAddDescription: val})}/>
+                                <Input onChangeText={(val) => this.setState({ POIToAddDescription: val })} />
                             </Item>
-                            <View style={{margin: 16}}>
+                            <View style={{ margin: 16 }}>
                                 <Text>Rating</Text>
                                 <Picker
-                                    style={{width: 128}}
-                                    onValueChange={(val) => this.setState({POIToAddRating: val})}>
-                                    <Picker.Item label="1" value="1"/>
-                                    <Picker.Item label="2" value="2"/>
-                                    <Picker.Item label="3" value="3"/>
-                                    <Picker.Item label="4" value="4"/>
-                                    <Picker.Item label="5" value="5"/>
-                                    <Picker.Item label="6" value="6"/>
+                                    style={{ width: 128 }}
+                                    onValueChange={(val) => this.setState({ POIToAddRating: val })}>
+                                    <Picker.Item label="1" value="1" />
+                                    <Picker.Item label="2" value="2" />
+                                    <Picker.Item label="3" value="3" />
+                                    <Picker.Item label="4" value="4" />
+                                    <Picker.Item label="5" value="5" />
+                                    <Picker.Item label="6" value="6" />
                                 </Picker>
                             </View>
-                            <View style={{margin: 10}}>
+                            <View style={{ margin: 10 }}>
                                 <Button
                                     title={'Chose photo'}
-                                    onPress={this.showImagePicker}/>
+                                    onPress={this.showImagePicker} />
                             </View>
                             <View style={{
                                 margin: 32,
@@ -292,11 +293,11 @@ export default class CreateArticleScreen extends Component {
                                 <Button
                                     title={'Close'}
                                     color={'grey'}
-                                    onPress={() => this.setState({showPOIForm: false})}>
+                                    onPress={() => this.setState({ showPOIForm: false })}>
                                 </Button>
                                 <Button
                                     title={'Save'}
-                                    onPress={() => {this.addPOI(); this.setState({showPOIForm: false})} }>
+                                    onPress={() => { this.addPOI(); this.setState({ showPOIForm: false }) }}>
                                 </Button>
                             </View>
                         </Form>
@@ -309,12 +310,29 @@ export default class CreateArticleScreen extends Component {
     showImagePicker = async () => {
         const { cameraRollStatus } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         let result = await Expo.ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
+            mediaTypes: "Images",
             base64: true
         }).catch(err => console.log(err));
 
+
         if (!result.cancelled) {
-            this.setState({POIToAddImages: this.state.POIToAddImages.concat([{base64: result.base64}])});
+            const photo = {
+                uri: result.uri,
+                type: 'image/jpg',
+                name: `${this.state.POIToAddName.split(' ').join('-')}.jpg`,
+            };
+
+            const body = new FormData();
+            body.append('authToken', 'secret');
+            body.append('photo', photo);
+            body.append('title', this.state.POIToAddDescription);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', serverUrl);
+            xhr.send(body);
+
+            console.log('>>>IMAGE', photo);
+            this.setState({ POIToAddImages: this.state.POIToAddImages.concat([{ base64: result.base64 }]) });
         }
     };
 
@@ -332,7 +350,7 @@ export default class CreateArticleScreen extends Component {
         poi.rating = this.state.POIToAddRating;
         poi.id = this.hashCode(this.state.POIToAddName);
         poi.location = (this.state.POIToAddLocation ? this.state.POIToAddLocation :
-            {lat: this.state.userLocation.latitude, lng: this.state.userLocation.longitude});
+            { lat: this.state.userLocation.latitude, lng: this.state.userLocation.longitude });
         poi.images = this.state.POIToAddImages; // zdjecia w basie sa przechowywane w formacie base64
 
         firebase.database().ref('users/users/' + this.state.userID + '/tours').once('value')
@@ -344,9 +362,9 @@ export default class CreateArticleScreen extends Component {
                 tours.find(e => e.id === this.state.currentTourID).places.push(poi);
 
                 firebase.database().ref('users/users/' + this.state.userID)
-                    .update({tours: tours})
+                    .update({ tours: tours })
                     .then(res => {
-                        this.setState({ modalVisibility: false, showPOIForm: false});
+                        this.setState({ modalVisibility: false, showPOIForm: false });
                         // console.log(res)
                     })
                     .catch(err => console.log(err));
@@ -357,7 +375,7 @@ export default class CreateArticleScreen extends Component {
     getCurrPosition = () => {
         navigator.geolocation.getCurrentPosition((location) => {
             this.setState({
-                userLocation: {latitude: location.coords.latitude, longitude: location.coords.longitude}
+                userLocation: { latitude: location.coords.latitude, longitude: location.coords.longitude }
             });
         }, err => console.log('Could not access location', err));
     }
@@ -367,7 +385,7 @@ export default class CreateArticleScreen extends Component {
             .then(resp => resp.json())
             .then(respJson => {
                 if (!this.state.previousClosestPlaceLocation || this.state.modalVisibility) {
-                    this.setState({previousClosestPlaceLocation: respJson.results[0].geometry.location});
+                    this.setState({ previousClosestPlaceLocation: respJson.results[0].geometry.location });
                     return;
                 }
                 let distance = this.getDistanceFromLatLonInKm(
@@ -380,7 +398,7 @@ export default class CreateArticleScreen extends Component {
                         .then(res => res.json())
                         .then(resJson => {
                             console.log('nein')
-                            this.setState({selectedPOI: resJson.result, modalVisibility: true})
+                            this.setState({ selectedPOI: resJson.result, modalVisibility: true })
                         })
                 }
             }).catch(err => console.log(err));
@@ -412,19 +430,19 @@ export default class CreateArticleScreen extends Component {
             }}>
                 <Container>
                     <Content>
-                        <Text style={{fontSize: 20}}>Do you want to add this poi to you tour?</Text>
-                        <View style={{margin: 16}}>
+                        <Text style={{ fontSize: 20 }}>Do you want to add this poi to you tour?</Text>
+                        <View style={{ margin: 16 }}>
                             <Text>Name</Text>
                             <Text>{this.state.selectedPOI.name}</Text>
                         </View>
-                        <View style={{margin: 16}}>
+                        <View style={{ margin: 16 }}>
                             <Text>Addred</Text>
                             <Text>{this.state.selectedPOI.formatted_address}</Text>
                         </View>
-                        <View style={{margin: 16}}>
+                        <View style={{ margin: 16 }}>
                             {this.state.selectedPOI.photos ?
-                                <Image style={{width: 100, height: 100}}
-                                       source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${this.state.selectedPOI.photos[0].photo_reference}&key=${api}`}}/>
+                                <Image style={{ width: 100, height: 100 }}
+                                    source={{ uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${this.state.selectedPOI.photos[0].photo_reference}&key=${api}` }} />
                                 : null}
                         </View>
                         <View style={{
@@ -437,14 +455,14 @@ export default class CreateArticleScreen extends Component {
                             <Button
                                 title={'Close'}
                                 color={'grey'}
-                                onPress={() => this.setState({modalVisibility: false})}>
+                                onPress={() => this.setState({ modalVisibility: false })}>
                             </Button>
                             <Button
                                 title={'Add'}
                                 onPress={() => {
                                     clearInterval(this.state.intervalID);
-                                    this.setState({modalVisibility: false, showPOIForm: true})
-                                    }}>
+                                    this.setState({ modalVisibility: false, showPOIForm: true })
+                                }}>
                             </Button>
                         </View>
 
@@ -466,9 +484,9 @@ export default class CreateArticleScreen extends Component {
             );
         } else {
             return (
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                     <MapView
-                        style={{flex: 1}}
+                        style={{ flex: 1 }}
                         initialRegion={{
                             latitude: this.state.userLocation.latitude,
                             longitude: this.state.userLocation.longitude,
