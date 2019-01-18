@@ -6,7 +6,7 @@ Tripster is an amazing mobile software for travelers, available on both android 
 ## Usage
 Application consists of 4 main screens, News Feed, Explore, Create Trip and Profile.
 
-1. **News Feed** - (_**still under development**_) - shows recent activity of the people we follow
+1. **News Feed** - (_**under development**_) - shows recent activity of the people we follow
 2. **Explore** - (_**beta**_) - explore new places or find people you know using explore screen
 
 3. **Create Trip** - consists of map and _Start Tour_ button. Clicking on _Start Tour_ buton you are telling the application that your trip has begun and you are ready to share your experience! Now if you are staying on one place for more than 10 min (_for development that time is set for 6 sec_) you wil be asked to add the place you are at to your trip, after confirming you are able to leave comment, photo and rate this place. Also at anymoment you can press on _Stop Tour_ or _Add POI_. 
@@ -28,12 +28,15 @@ At the top, you can see some basic user information:
 
 # How to run
 1. Clone this repo and run `npm i` in the _tripster_ directory
-2. Download ngrok, after downloading run it with _http 8873_ parameteres (example: `./ngrok http 8873`).
-3. You will be shown your tunnel address (Forwarding                    _http://TUNNEL_ADDRESS.ngrok.io -> localhost:8873_), now you need to copy **TUNNEL_ADDRESS** and change it in **./tunnel_address.js**.
-4. Download Expo on your mobile device.
-5. Run expo in _tripster_ directory `expo start --tunnel`. `--tunnel` param enables vpn so you dont need to be in the same network to connect your device with your local machine. Known isues: if your tunnel is falling back to often and your are not able to create tounel connection try logginig in expo account using console. Search to find out how to do it.
-6. Run server with `node ./api/sercer.js` in _tripster_ directory.
-7. Scan the provided QR with your mobile device:
+2. In main folder create two files for Google API key ( google.apikey.js ) and Firebase API key ( firebase.apikey.js ) and export keys from them. Example:
+    * Firebase: ``` export const firebase_api = 'firebaseApiKeyGoesHere'; ```  
+    * Google: ``` export const GOOGLE_MAPS_APIKEY = 'googleApiKeyGoesHere'; ```  
+3. Download ngrok, after downloading run it with _http 8873_ parameteres (example: `./ngrok http 8873`).
+4. You will be shown your tunnel address (Forwarding                    _http://***TUNNEL_ADDRESS***.ngrok.io -> localhost:8873_), now you need to copy **TUNNEL_ADDRESS** and change it in **./tunnel_address.js**.
+5. Download Expo on your mobile device.
+6. Run expo in _tripster_ directory `expo start --tunnel`. "`--tunnel`" parameter enables tunnel so you dont need to be in the same network to connect your device with your local machine. Known ngrok issue: if your tunnel is falling back too often and your are not able to create tunnel connection try logginig in to expo account using console. Search to find out how to do it.
+7. Run server with `node ./api/server.js` in _tripster_ directory.
+8. Scan the provided QR with your mobile device:
     - __iOS__ : Just open camera and point it on QR, wait untill shown notification asking if you want to open the Expo application. 
     - __Android__ : Scann QR with scann button in Expo application.
-8. Wait for Expo building and downloading __Tripster__ app.
+9. Wait for Expo building and downloading __Tripster__ app.
