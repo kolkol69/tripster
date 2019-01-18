@@ -13,3 +13,4 @@ api/firebase_apikey.bart.js
 *.1.js
 *.0.js
 tunnel_address.js
+uploads
