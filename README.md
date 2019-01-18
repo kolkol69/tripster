@@ -29,7 +29,7 @@ At the top, you can see some basic user information:
 # How to run
 1. Clone this repo and run `npm i` in the _tripster_ directory
 2. In main folder create two files for Google API key ( google.apikey.js ) and Firebase API key ( firebase.apikey.js ) and export keys from them. Example:
-    * Firebase: ``` export const firebase_api = 'firebaseApiKeyGoesHere'; ```  
+    * Firebase: ``` module.exports = {"firebase_api" : 'firebaseApiKeyGoesHere'} ```  
     * Google: ``` export const GOOGLE_MAPS_APIKEY = 'googleApiKeyGoesHere'; ```  
 3. Download ngrok, after downloading run it with _http 8873_ parameteres (example: `./ngrok http 8873`).
 4. You will be shown your tunnel address (Forwarding                    _http://***TUNNEL_ADDRESS***.ngrok.io -> localhost:8873_), now you need to copy **TUNNEL_ADDRESS** and change it in **./tunnel_address.js**.
