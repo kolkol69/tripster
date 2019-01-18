@@ -6,7 +6,7 @@ const startTour = require('./routes/startTour');
 const addPOI = require('./routes/addPOI');
 const getUserData = require('./routes/getUserData');
 const updateLikes = require('./routes/updateLikes');
-const uploadImg = require('./routes/uploadImg');
+const uploadImg = require('./routes/uploadPhoto');
 
 
 const port = 8873;
