@@ -6,6 +6,8 @@ const startTour = require('./routes/startTour');
 const addPOI = require('./routes/addPOI');
 const getUserData = require('./routes/getUserData');
 const updateLikes = require('./routes/updateLikes');
+const uploadImg = require('./routes/uploadImg');
+
 
 const port = 8873;
 const app = express();
@@ -26,6 +28,7 @@ app.use('/getPlaces', getPlaces);
 app.use('/startTour', startTour);
 app.use('/addPOI', addPOI);
 app.use('/update/likes', updateLikes);
+app.use('/upload/img', uploadImg);
 app.use('/user', getUserData);
 
 app.listen(port, (err) => {
