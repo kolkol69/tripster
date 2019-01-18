@@ -1,4 +1,6 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
+
 const start_router = require('./routes/start');
 const fakeUsers = require('./routes/fakeUsers');
 const getPlaces = require('./routes/getPlaces');
@@ -22,6 +24,7 @@ app.use((req, res, next) => {
 
   req.method === 'OPTIONS' ? res.sendStatus(204) : next();
 });
+app.use(fileUpload());
 app.use('/', start_router);
 app.use('/generateFakeUsers', fakeUsers);
 app.use('/getPlaces', getPlaces);
