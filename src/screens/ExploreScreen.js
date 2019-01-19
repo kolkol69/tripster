@@ -182,7 +182,8 @@ export default class ExploreScreen extends Component {
 
 
     dispUserProfile = () => {
-        console.log("userprof")
+        console.log("userprof");
+        console.log(this.state.selectedUserId);
         return (
             <View style={{
                 zIndex: 2,
@@ -260,7 +261,7 @@ export default class ExploreScreen extends Component {
                                                 <Button title={'Show'}
                                                     onPress={() => {
                                                         console.log("pressed");
-                                                        this.setState({ tours: false, users: false, loading: false, userProfile: true, selectedUserId: item.userId });
+                                                        this.setState({ tours: false, users: false, loading: false, userProfile: true, selectedUserId: item.id });
                                                     }}>
                                                 </Button>
                                             </Right>

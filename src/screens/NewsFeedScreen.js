@@ -88,7 +88,7 @@ export default class NewsFeedScreen extends Component {
     dispPosts = () => {
         return (this.state.users.map(element => <ProfilePostCards user={element} posts={element.tours} />));
     }
-
+    /*
     render() {
         return (
             <ScrollView >
@@ -99,8 +99,8 @@ export default class NewsFeedScreen extends Component {
         );
     }
 }
+*/
 
-    /*
     render() {
         return (
             <ScrollView >
@@ -123,7 +123,7 @@ export default class NewsFeedScreen extends Component {
         );
     }
 }
-*/
+
 
 const styles = StyleSheet.create({
     container: {
