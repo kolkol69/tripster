@@ -7,4 +7,3 @@ npm-debug.*
 *.mobileprovision
 api_key.js
 *.apikey.js
-firebase_apikey.js
