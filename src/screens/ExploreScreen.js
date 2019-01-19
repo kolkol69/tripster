@@ -50,6 +50,8 @@ import {
     Thumbnail,
 } from 'native-base'
 
+import AjaxUserData from '../components/Profile/GetUserData';
+
 const instructions = Platform.select({
     ios: 'shake for dev menu',
     android: 'Shake or press menu button for dev menu',
@@ -67,6 +69,9 @@ function tourCheck(tour) {
     else return false;
 }
 
+
+
+
 export default class ExploreScreen extends Component {
     static navigationOptions = {
         title: 'Explore',
@@ -78,6 +83,8 @@ export default class ExploreScreen extends Component {
         tours: false, //whether or not tours are displayed
         users: false, //whether or not users are displayed
         loading: false,
+        userProfile: false,
+        selectedUserId: -1
     }
 
     componentDidMount() {
@@ -86,15 +93,18 @@ export default class ExploreScreen extends Component {
         }
     }
 
+
+
+
     searchForUsers = () => {
         this.setState({ elements: [], loading: true });
         //get users from database and set 'elements' accordingly
         firebase.database().ref('/users/users/').orderByChild('name').equalTo(this.state.text).once('value')
             .then(resp => {//this makes it so users are set to be displayed and not tours
                 if (resp.val() == undefined || resp.val() == null) { //checks whether response contains anything
-                    this.setState({ elements: [], tours: false, users: true, loading: false }); //sets 'elements' array with nothing as nothing has been acquired, sets display parameters to display tours
+                    this.setState({ elements: [], tours: false, users: true, userProfile: false, loading: false }); //sets 'elements' array with nothing as nothing has been acquired, sets display parameters to display tours
                 }
-                else this.setState({ elements: Object.values(resp.val()), tours: false, users: true, loading: false });
+                else this.setState({ elements: Object.values(resp.val()), tours: false, users: true, userProfile: false, loading: false });
             });
     }
 
@@ -108,7 +118,7 @@ export default class ExploreScreen extends Component {
             .then(resp => {
                 var toursArray = []; // temporary array for fitting tours
                 if (resp.val() == undefined || resp.val() == null) { //checks whether response contains anything
-                    this.setState({ elements: toursArray, tours: true, users: false, loading: false }); //sets 'elements' array with nothing as nothing has been acquired, sets display parameters to display tours
+                    this.setState({ elements: toursArray, tours: true, users: false, userProfile: false, loading: false }); //sets 'elements' array with nothing as nothing has been acquired, sets display parameters to display tours
                 }
                 else {
                     user_array = Object.values(resp.val());// response value into array
@@ -124,7 +134,7 @@ export default class ExploreScreen extends Component {
                         }
                     }
                     
-                    this.setState({ elements: toursArray, tours: true, users: false, loading: false }); // sets 'elements' array with matching tours, sets display parameters to display tours
+                    this.setState({ elements: toursArray, tours: true, users: false, userProfile: false, loading: false }); // sets 'elements' array with matching tours, sets display parameters to display tours
 
                 }
                 
@@ -169,6 +179,48 @@ export default class ExploreScreen extends Component {
 
     }
 
+
+
+    dispUserProfile = () => {
+        console.log("userprof")
+        return (
+            <View style={{
+                zIndex: 2,
+                width: width,
+                top: 100,
+                position: 'absolute',
+            }}>
+            <Container style={styles.container}>
+                <Content>
+                    <AjaxUserData userId={this.state.selectedUserId} />
+                </Content>
+                </Container >
+            </View>
+        );
+    }
+
+     /*
+    selectUser = (userId) => {
+        this.setState({ tours: false, users: false, loading: false, userProfile: false, selectedUserId: userId });
+        
+    }
+    */
+
+    /*
+     <Button title={'Add'}
+                                                    onPress={() => {
+                                                        this.setState({
+                                                            showNearbyPOIList: false,
+                                                            showPOIForm: true,
+                                                            selectedPOI: item.result,
+                                                            POIToAddLocation: item.result.geometry.location
+                                                        });
+                                                    }}>
+                                            </Button>
+     * */
+
+    //<Icon name="arrow-forward" />
+
     dispUserList = () => {
         if (!Array.isArray(this.state.elements) || !this.state.elements.length) {
             return (
@@ -205,7 +257,12 @@ export default class ExploreScreen extends Component {
                                                 <Text note>{item.region}</Text>
                                             </Body>
                                             <Right>
-                                                <Icon name="arrow-forward" />
+                                                <Button title={'Show'}
+                                                    onPress={() => {
+                                                        console.log("pressed");
+                                                        this.setState({ tours: false, users: false, loading: false, userProfile: true, selectedUserId: item.userId });
+                                                    }}>
+                                                </Button>
                                             </Right>
                                         </ListItem>
                                     )}
@@ -274,7 +331,7 @@ export default class ExploreScreen extends Component {
         return (<View>
             {this.dispSearchForm()}
             {this.dispSearchButtons()}
-            {this.state.users ? this.dispUserList() : (this.state.tours ? this.dispTourList() : this.state.loading && <Spinner />)}
+            {this.state.users ? this.dispUserList() : (this.state.tours ? this.dispTourList() : (this.state.userProfile ? this.dispUserProfile() : this.state.loading && <Spinner />))}
 
         </View>
         );
@@ -283,7 +340,7 @@ export default class ExploreScreen extends Component {
 }
 
 
-
+/*
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -303,4 +360,13 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
 
+});
+*/
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white'
+    }
 });
