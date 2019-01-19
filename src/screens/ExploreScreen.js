@@ -17,7 +17,6 @@ var firebaseConfig = {
 
 };
 
-
 import Spinner from '../components/Spinner';
 import {
     TextInput,
@@ -69,9 +68,6 @@ function tourCheck(tour) {
     else return false;
 }
 
-
-
-
 export default class ExploreScreen extends Component {
     static navigationOptions = {
         title: 'Explore',
@@ -93,9 +89,6 @@ export default class ExploreScreen extends Component {
         }
     }
 
-
-
-
     searchForUsers = () => {
         this.setState({ elements: [], loading: true });
         //get users from database and set 'elements' accordingly
@@ -107,9 +100,6 @@ export default class ExploreScreen extends Component {
                 else this.setState({ elements: Object.values(resp.val()), tours: false, users: true, userProfile: false, loading: false });
             });
     }
-
-
-
 
     searchForTours = () => {
         this.setState({ elements: [], loading: true });
@@ -199,28 +189,6 @@ export default class ExploreScreen extends Component {
         );
     }
 
-     /*
-    selectUser = (userId) => {
-        this.setState({ tours: false, users: false, loading: false, userProfile: false, selectedUserId: userId });
-        
-    }
-    */
-
-    /*
-     <Button title={'Add'}
-                                                    onPress={() => {
-                                                        this.setState({
-                                                            showNearbyPOIList: false,
-                                                            showPOIForm: true,
-                                                            selectedPOI: item.result,
-                                                            POIToAddLocation: item.result.geometry.location
-                                                        });
-                                                    }}>
-                                            </Button>
-     * */
-
-    //<Icon name="arrow-forward" />
-
     dispUserList = () => {
         if (!Array.isArray(this.state.elements) || !this.state.elements.length) {
             return (
@@ -260,7 +228,7 @@ export default class ExploreScreen extends Component {
                                                 <Button title={'Show'}
                                                     onPress={() => {
                                                         console.log("pressed");
-                                                        this.setState({ tours: false, users: false, loading: false, userProfile: true, selectedUserId: item.userId });
+                                                        this.setState({ tours: false, users: false, loading: false, userProfile: true, selectedUserId: item.id });
                                                     }}>
                                                 </Button>
                                             </Right>
@@ -274,8 +242,6 @@ export default class ExploreScreen extends Component {
             );
         }
     }
-
-
 
     dispTourList = () => {
         
@@ -338,31 +304,6 @@ export default class ExploreScreen extends Component {
 
     }
 }
-
-
-/*
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#4F6D7A',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-        color: '#F5FCFF',
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#F5FCFF',
-        marginBottom: 5,
-    },
-
-});
-*/
-
 
 const styles = StyleSheet.create({
     container: {

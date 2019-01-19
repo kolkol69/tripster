@@ -15,16 +15,27 @@ firebase.initializeApp(config);
 
 const database = firebase.database();
 
-function getUserData(res, userId = 11111) {
+function getUserData(res, userId) {
+    let selectUsr;
+    if(userId == 11111){
+        selectUsr = 0;
+    }else if( userId == 22222){
+        selectUsr = 1;
+    }else{
+        selectUsr = 2;
+    }
+
+    console.log('>>>>userID',typeof userId);
     const dbref = database.ref('/users/users/');
     dbref.orderByChild('id').equalTo(userId).once('value')
         .then(snap => {
-            res.send(snap.val()[0]);
+            res.send(snap.val()[selectUsr]);
         }).catch(err => {
+            console.log(err);
             res.send(err);
         });
 }
-function getUserPostData(res, userId = 11111, postId = 1710) {
+function getUserPostData(res, userId, postId = 1710) {
     const dbref = database.ref('/users/users/')
     dbref.orderByChild('id').equalTo(userId).once('value')
         .then(snap => {
