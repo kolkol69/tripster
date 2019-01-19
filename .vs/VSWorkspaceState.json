@@ -3,7 +3,10 @@
     "",
     "\\api",
     "\\src",
+    "\\src\\components",
+    "\\src\\components\\Profile",
     "\\src\\screens"
   ],
+  "SelectedNode": "\\gitignore",
   "PreviewInSolutionExplorer": false
 }
