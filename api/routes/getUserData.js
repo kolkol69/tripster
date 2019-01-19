@@ -1,10 +1,9 @@
 const express = require('express');
-const firebase_api = require('../../firebase.apikey');
 const firebase = require("firebase");
 
 const router = express.Router();
 var config = {
-    apiKey: firebase_api.key,
+    apiKey: 'AIzaSyC2_1zwxux1iZw3Vl9itVao8TJzegpJA2Y',
     authDomain: "tripster2-0.firebaseapp.com",
     databaseURL: "https://tripster2-0.firebaseio.com",
     projectId: "tripster2-0",
@@ -50,13 +49,6 @@ router.get('/', (req, res) => {
     getUserData(res);
 });
 
-
-
-// router.get('/test', (req, res) => {
-//     const dbref = database.ref('/users/users/0/tours/0');
-//     dbref.update({id: 1117});
-//     res.send(dbref);
-// });
 
 router.get('/:id', (req, res) => {
     getUserData(res, +req.params.id);

@@ -8,8 +8,7 @@ import {
     StatusBar
 } from 'react-native';
 import { MapView } from 'react-native'
-import TestMap from '../components/Profile/TestMap';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
+
 
 
 import * as firebase from 'firebase';
