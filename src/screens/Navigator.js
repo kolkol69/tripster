@@ -9,13 +9,12 @@ import AppNavigator from './src/navigation/AppNavigator'
 // create our app's navigation stack
 const App = SwitchNavigator(
   {
-    LoadingScreen,
     SignupScreen,
     LoginScreen,
     AppNavigator
   },
   {
-    initialRouteName: 'LoadingScreen'
+    initialRouteName: 'LoginScreen'
   }
 )
 export default App
