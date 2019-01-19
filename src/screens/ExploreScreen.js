@@ -194,6 +194,7 @@ export default class ExploreScreen extends Component {
                             <List>
                                 <FlatList
                                     data={this.state.elements}
+                                    keyExtractor={(item, index) => index.toString()}
                                     renderItem={({ item }) => (
                                         <ListItem avatar>
                                             <Left>
@@ -245,6 +246,7 @@ export default class ExploreScreen extends Component {
                             <List>
                                 <FlatList
                                     data={this.state.elements}
+                                    keyExtractor={(item, index) => index.toString()}
                                     renderItem={({ item }) => (
                                         <ListItem avatar>
                                             <Left>
