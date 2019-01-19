@@ -199,28 +199,6 @@ export default class ExploreScreen extends Component {
         );
     }
 
-     /*
-    selectUser = (userId) => {
-        this.setState({ tours: false, users: false, loading: false, userProfile: false, selectedUserId: userId });
-        
-    }
-    */
-
-    /*
-     <Button title={'Add'}
-                                                    onPress={() => {
-                                                        this.setState({
-                                                            showNearbyPOIList: false,
-                                                            showPOIForm: true,
-                                                            selectedPOI: item.result,
-                                                            POIToAddLocation: item.result.geometry.location
-                                                        });
-                                                    }}>
-                                            </Button>
-     * */
-
-    //<Icon name="arrow-forward" />
-
     dispUserList = () => {
         if (!Array.isArray(this.state.elements) || !this.state.elements.length) {
             return (
@@ -338,30 +316,6 @@ export default class ExploreScreen extends Component {
 
     }
 }
-
-
-/*
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#4F6D7A',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-        color: '#F5FCFF',
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#F5FCFF',
-        marginBottom: 5,
-    },
-
-});
-*/
 
 
 const styles = StyleSheet.create({

@@ -8,8 +8,7 @@ import {
     StatusBar
 } from 'react-native';
 import { MapView } from 'react-native'
-import TestMap from '../components/Profile/TestMap';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
+
 
 
 import * as firebase from 'firebase';
@@ -80,7 +79,6 @@ export default class NewsFeedScreen extends Component {
     }
 
     componentDidMount = () => {
-        //this.setState({ userid: 11111 });
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
@@ -104,37 +102,10 @@ export default class NewsFeedScreen extends Component {
     }
 }
 
-    /*
-    render() {
-        return (
-            <ScrollView >
-            <View style={styles.container}>
-                <StatusBar
-                    barStyle="light-content"
-                    backgroundColor="#4F6D7A"
-                />
-                <Text style={styles.welcome}>
-                    News Feed are commin
-                </Text>
-                <Text style={styles.instructions}>
-                    News Feed are commin
-                </Text>
-                <Text style={styles.instructions}>
-                    {instructions}
-                </Text>
-            </View>
-        </ScrollView>
-        );
-    }
-}
-*/
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // backgroundColor: '#4F6D7A',
+        flex: 1
     },
     welcome: {
         fontSize: 20,
