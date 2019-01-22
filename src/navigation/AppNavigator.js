@@ -1,10 +1,17 @@
-import React from 'react';
-import { createSwitchNavigator } from 'react-navigation';
+import React from 'react'
+import { StyleSheet, Platform, Image, Text, View } from 'react-native'
+import { SwitchNavigator } from 'react-navigation'
+// import the different screens
+import SignupScreen from '../screens/SignupScreen'
+import LoginScreen from '../screens/LoginScreen'
+import MainTabNavigator from './MainTabNavigator'
+// create our app's navigation stack
+const App = SwitchNavigator(
+  {
+    LoginScreen,
+    MainTabNavigator,
+    SignupScreen,
 
-import MainTabNavigator from './MainTabNavigator';
-
-export default createSwitchNavigator({
-  // You could add another route here for authentication.
-  // Read more at https://reactnavigation.org/docs/en/auth-flow.html
-  Main: MainTabNavigator,
-});
+  },
+)
+export default App
